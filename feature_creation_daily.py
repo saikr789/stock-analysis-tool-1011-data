@@ -863,8 +863,7 @@ def sequential_increase_decrease(stock, full_stock):
     return stock
 
 
-cols = ["Revenue", "Dividend Value", "Income",
-        "Expenditure", "Net Profit", "EPS"]
+cols = ["Revenue", "Dividend Value", "Income","Expenditure", "Net Profit", "EPS"]
 
 
 def generate_dictionary_for_quarterwise_data(stock, columnName):
@@ -1120,23 +1119,6 @@ def create_new_LB_UB(stock, full_stock):
             stock.loc[index, ncols] = [low/today, high/today]
     return stock
 
-
-path = os.path.join(os.getcwd(), "Data")
-
-
-def push_to_git():
-    print("push_to_git")
-    os.chdir("./stock-analysis-tool-1011")
-    subprocess.run(["git", "config", "--global", "user.email",
-                   "saikrishna.nama@msitprogram.net"])
-    subprocess.run(["git", "config", "--global", "user.name", "saikr789"])
-    subprocess.run(["git", "pull", "origin", "master"])
-    subprocess.run(["git", "add", "Data/GRStock"])
-    subprocess.run(["git", "commit", "-m", "GRStock"])
-    subprocess.run(
-        ["git", "push", "https://saikr789:nama_123@github.com/saikr789/stock-analysis-tool-1011.git"])
-
-
 def perform_operation(security_code):
     try:
         security_code = str(security_code)
@@ -1192,10 +1174,13 @@ def perform_operation(security_code):
     except:
         traceback.print_exc()
 
-
+        
+path = os.path.join(os.getcwd(), "Data")
 df = pd.read_csv(os.path.join(path, "Equity.csv"))
 codes = df["Security Code"].values.tolist()
 codes.sort()
+
+
 for a in codes:
     try:
         print(a)
