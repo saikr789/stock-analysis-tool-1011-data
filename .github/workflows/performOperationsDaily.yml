@@ -31,12 +31,13 @@ jobs:
       - name: Index and Risk Free Rate Scrape
         run: |
           python index_scrape.py
+          python index_scrape.py
+          python risk_free_rate_scrape.py
           python risk_free_rate_scrape.py
 
       - name: Stock Scrape
         run: |
           python dailystock.py
-          python risk_free_rate_scrape.py
 
       - name: Commit Files
         run: |
