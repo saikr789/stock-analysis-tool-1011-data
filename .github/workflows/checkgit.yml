@@ -1,0 +1,45 @@
+# This workflow will install Python dependencies, run tests and lint with a single version of Python
+# For more information see: https://help.github.com/actions/language-and-framework-guides/using-python-with-github-actions
+
+name: Check Git Status
+on:
+  workflow_dispatch:
+ 
+jobs:
+
+  scraping:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Python 3.9
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.9
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Setup Github Config
+        run: |
+          git config --global user.name "saikr789"
+          git config --global user.email "saikrishna.nama@msitprogram.net"
+          
+      - name: Index and Risk Free Rate Scrape
+        run: |
+          python index_scrape.py
+          python index_scrape.py
+          python risk_free_rate_scrape.py
+          python risk_free_rate_scrape.py
+
+      - name: Check Git Status
+        run: |
+          ls
+      - name: Commit Files
+        run: |
+          git pull origin master
+          git add .
+          git commit -m "."
+          git push origin master
