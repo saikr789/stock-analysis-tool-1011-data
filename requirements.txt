@@ -1,0 +1,8 @@
+selenium 
+webdriver-manager
+pandas
+bs4
+lxml
+html5lib 
+kernel-run
+scikit-learn
