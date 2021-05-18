@@ -1,0 +1,85 @@
+# This workflow will install Python dependencies, run tests and lint with a single version of Python
+# For more information see: https://help.github.com/actions/language-and-framework-guides/using-python-with-github-actions
+
+name: Perform Operations Daily
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "30 18 * * *"
+jobs:
+
+  scraping:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Python 3.9
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.9
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Setup Github Config
+        run: |
+          git config --global user.name "saikr789"
+          git config --global user.email "saikrishna.nama@msitprogram.net"
+          
+      - name: Index and Risk Free Rate Scrape
+        run: |
+          python index_scrape.py
+          python risk_free_rate_scrape.py
+
+      - name: Stock Scrape
+        run: |
+          python dailystock.py
+          python risk_free_rate_scrape.py
+
+      - name: Commit Files
+        run: |
+          git pull origin master
+          git add Data/Index.csv
+          git add Data/sp500.csv
+          git commit -m "Index `date +'%d-%m-%Y'`"
+          git add Data/RiskFreeRateFull.csv
+          git add Data/RiskFreeRate.csv
+          git commit -m "Risk Free Rate `date +'%d-%m-%Y'`"
+          git add Data/Stock
+          git commit -m "stock `date +'%d-%m-%Y'`"
+          git push origin master
+  
+  featurecreation:
+    needs:  [scraping]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Python 3.9
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.9
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Setup Github Config
+        run: |
+          git config --global user.name "saikr789"
+          git config --global user.email "saikrishna.nama@msitprogram.net"
+          
+      - name: Feature Creation
+        run: |
+          python feature_creation_daily.py
+          python risk_free_rate_scrape.py
+
+      - name: Commit Files
+        run: |
+          git pull origin master
+          git add Data/GRStock
+          git commit -m "gr stock `date +'%d-%m-%Y'`"
+          git push origin master
+    
