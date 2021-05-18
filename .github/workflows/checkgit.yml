@@ -7,7 +7,7 @@ on:
  
 jobs:
 
-  scraping:
+  checkgitstatus:
     runs-on: ubuntu-latest
 
     steps:
