@@ -26,14 +26,7 @@ jobs:
         run: |
           git config --global user.name "saikr789"
           git config --global user.email "saikrishna.nama@msitprogram.net"
-          
-      - name: Index and Risk Free Rate Scrape
-        run: |
-          python index_scrape.py
-          python index_scrape.py
-          python risk_free_rate_scrape.py
-          python risk_free_rate_scrape.py
-
+     
       - name: Check Git Status
         run: |
           ls
