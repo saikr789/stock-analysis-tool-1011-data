@@ -74,7 +74,6 @@ jobs:
       - name: Feature Creation
         run: |
           python feature_creation_daily.py
-          python risk_free_rate_scrape.py
 
       - name: Commit Files
         run: |
