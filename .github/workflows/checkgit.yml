@@ -30,9 +30,3 @@ jobs:
       - name: Check Git Status
         run: |
           ls
-      - name: Commit Files
-        run: |
-          git pull origin master
-          git add .
-          git commit -m "."
-          git push origin master
