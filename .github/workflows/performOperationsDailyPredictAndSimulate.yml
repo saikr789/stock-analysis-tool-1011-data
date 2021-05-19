@@ -1,0 +1,236 @@
+# For more information see: https://help.github.com/actions/language-and-framework-guides/using-python-with-github-actions
+
+name: Perform Operations Daily - Predict and Create Simulation Files
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "30 18 * * *"
+jobs:
+  predict100:
+    name: predict100
+    runs-on: ubuntu-latest
+    steps:
+      - name: Removing Unnecessary Files
+        run: |
+          sudo rm -rf /usr/local/lib/android
+          sudo rm -rf /usr/share/dotnet
+      - uses: actions/checkout@v2
+      - name: Set up Python 3.9
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.9
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+      - name: Predict 100
+        run: |
+          python predict100.py
+      - name: Setup Github Config
+        run: |
+          git config --global user.name "saikr789"
+          git config --global user.email "saikrishna.nama@msitprogram.net"
+      - name: Commiting New Files
+        continue-on-error: true
+        run: |
+          git pull origin master
+          git add Data/predict100.csv
+          git commit -m "predict `date +'%d-%m-%Y'`"
+          git push origin master
+          
+  predict200 :
+    name: predict200
+    continue-on-error: true
+    runs-on: ubuntu-latest
+    steps:
+      - name: Removing Unnecessary Files
+        run: |
+          sudo rm -rf /usr/local/lib/android
+          sudo rm -rf /usr/share/dotnet
+      - uses: actions/checkout@v2
+      - name: Set up Python 3.9
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.9
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+      - name: Predict 200
+        run: |
+          python predict200.py
+      - name: Setup Github Config
+        run: |
+          git config --global user.name "saikr789"
+          git config --global user.email "saikrishna.nama@msitprogram.net"
+      - name: Commiting New Files
+        continue-on-error: true
+        run: |
+          git pull origin master
+          git add Data/predict200.csv
+          git commit -m "predict `date +'%d-%m-%Y'`"
+          git push origin master
+          
+  predict300:
+    name: predict300
+    continue-on-error: true
+    runs-on: ubuntu-latest
+    steps:
+      - name: Removing Unnecessary Files
+        run: |
+          sudo rm -rf /usr/local/lib/android
+          sudo rm -rf /usr/share/dotnet
+      - uses: actions/checkout@v2
+      - name: Set up Python 3.9
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.9
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+      - name: Predict 300
+        run: |
+          python predict300.py
+      - name: Setup Github Config
+        run: |
+          git config --global user.name "saikr789"
+          git config --global user.email "saikrishna.nama@msitprogram.net"
+      - name: Commiting New Files
+        continue-on-error: true
+        run: |
+          git pull origin master
+          git add Data/predict300.csv
+          git commit -m "predict `date +'%d-%m-%Y'`"
+          git push origin master
+          
+  predict400:
+    name: predict400
+    continue-on-error: true
+    runs-on: ubuntu-latest
+    steps:
+      - name: Removing Unnecessary Files
+        run: |
+          sudo rm -rf /usr/local/lib/android
+          sudo rm -rf /usr/share/dotnet
+      - uses: actions/checkout@v2
+      - name: Set up Python 3.9
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.9
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+      - name: Predict 400
+        run: |
+          python predict400.py
+      - name: Setup Github Config
+        run: |
+          git config --global user.name "saikr789"
+          git config --global user.email "saikrishna.nama@msitprogram.net"
+      - name: Commiting New Files
+        continue-on-error: true
+        run: |
+          git pull origin master
+          git add Data/predict400.csv
+          git commit -m "predict `date +'%d-%m-%Y'`"
+          git push origin master
+          
+  predict500:
+    name: predict500
+    continue-on-error: true
+    runs-on: ubuntu-latest
+    steps:
+      - name: Removing Unnecessary Files
+        run: |
+          sudo rm -rf /usr/local/lib/android
+          sudo rm -rf /usr/share/dotnet
+      - uses: actions/checkout@v2
+      - name: Set up Python 3.9
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.9
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+      - name: Predict 500
+        run: |
+          python predict500.py
+      - name: Setup Github Config
+        run: |
+          git config --global user.name "saikr789"
+          git config --global user.email "saikrishna.nama@msitprogram.net"
+      - name: Commiting New Files
+        continue-on-error: true
+        run: |
+          git pull origin master
+          git add Data/predict500.csv
+          git commit -m "predict `date +'%d-%m-%Y'`"
+          git push origin master
+  
+  simulate:
+    name: simulate
+    needs:  [predict100,predict200,predict300,predict400,predict500]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Removing Unnecessary Files
+        run: |
+          sudo rm -rf /usr/local/lib/android
+          sudo rm -rf /usr/share/dotnet
+      - uses: actions/checkout@v2
+      - name: Set up Python 3.9
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.9
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+      - name: Simulate
+        run: |
+          python combine.py
+          python create_simulation_files.py
+      - name: Setup Github Config
+        run: |
+          git config --global user.name "saikr789"
+          git config --global user.email "saikrishna.nama@msitprogram.net"
+      - name: Commiting New Files
+        run: |
+          git pull origin master
+          git add Data/SimulationResult
+          git commit -m "simulation `date +'%d-%m-%Y'`"
+          git push origin master
+  
+  topreturns:
+    name: topreturns
+    needs:  simulate
+    runs-on: ubuntu-latest
+    steps:
+      - name: Removing Unnecessary Files
+        run: |
+          sudo rm -rf /usr/local/lib/android
+          sudo rm -rf /usr/share/dotnet
+      - uses: actions/checkout@v2
+      - name: Set up Python 3.9
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.9
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+      - name: Top Companies
+        run: |
+          python simulation.py
+      - name: Setup Github Config
+        run: |
+          git config --global user.name "saikr789"
+          git config --global user.email "saikrishna.nama@msitprogram.net"
+      - name: Commiting New Files
+        run: |
+          git pull origin master
+          git add Data/SimulationResult
+          git commit -m "top returns `date +'%d-%m-%Y'`"
+          git push origin master
