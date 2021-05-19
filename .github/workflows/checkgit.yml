@@ -8,9 +8,19 @@ on:
 jobs:
 
   checkgitstatus:
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
 
     steps:
+      - name: Determine free space before
+        run: |
+          echo "FREE_GIG_BEFORE=$(df --output=avail --sync -BG "${{ github.workspace }}" | tail -1 | sed 's/[^0-9]*//g')" >> $GITHUB_ENV
+      - name: Maximize build space
+        uses: easimon/maximize-build-space@master
+        with:
+           root-reserve-mb: 512
+           swap-size-mb: 1024
+           remove-dotnet: 'true'
+           remove-android: 'true'
       - uses: actions/checkout@v2
       - name: Set up Python 3.9
         uses: actions/setup-python@v2
