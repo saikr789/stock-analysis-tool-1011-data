@@ -35,4 +35,6 @@ jobs:
      
       - name: Check Git Status
         run: |
+          python combine.py
+          python create_simulation_files.py
           echo "FREE_GIG_BEFORE=$(df --output=avail --sync -BG "${{ github.workspace }}" | tail -1 | sed 's/[^0-9]*//g')" >> $GITHUB_ENV
