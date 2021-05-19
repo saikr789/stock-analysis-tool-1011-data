@@ -1,0 +1,5 @@
+investment,shares,entry,exit,date,close
+99775.2,56,True,False,25-11-2019,1781.7
+83872.0,56,False,True,21-10-2020,1493.7
+83064.25,53,True,False,05-04-2021,1567.25
+83323.45000000001,53,False,True,16-04-2021,1556.9
