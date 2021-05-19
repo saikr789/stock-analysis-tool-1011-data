@@ -37,6 +37,7 @@ jobs:
         run: |
           python combine.py
           python create_simulation_files.py
+          python simulation.py
           echo "FREE_GIG_BEFORE=$(df --output=avail --sync -BG "${{ github.workspace }}" | tail -1 | sed 's/[^0-9]*//g')" >> $GITHUB_ENV
       - name: Setup Github Config
         run: |
@@ -45,6 +46,8 @@ jobs:
       - name: Commiting New Files
         run: |
           git pull origin master
+          git add Data/Simulation
+          git commit -m "simmulation `date +'%d-%m-%Y'`"
           git add Data/SimulationResult
           git commit -m "top returns `date +'%d-%m-%Y'`"
           git push origin master
