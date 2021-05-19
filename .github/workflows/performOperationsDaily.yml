@@ -10,7 +10,6 @@ jobs:
 
   scraping:
     runs-on: ubuntu-latest
-
     steps:
       - name: Removing Unnecessary Files
         run: |
@@ -60,6 +59,10 @@ jobs:
     needs:  [scraping]
     runs-on: ubuntu-latest
     steps:
+      - name: Removing Unnecessary Files
+        run: |
+          sudo rm -rf /usr/local/lib/android
+          sudo rm -rf /usr/share/dotnet
       - uses: actions/checkout@v2
       - name: Set up Python 3.9
         uses: actions/setup-python@v2
