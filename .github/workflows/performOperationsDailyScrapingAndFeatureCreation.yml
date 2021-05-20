@@ -43,6 +43,7 @@ jobs:
           python dailystock.py
 
       - name: Commit Files
+        continue-on-error: true
         run: |
           git pull origin master
           git add Data/Index.csv
@@ -84,6 +85,7 @@ jobs:
           python feature_creation_daily.py
 
       - name: Commit Files
+        continue-on-error: true
         run: |
           git pull origin master
           git add Data/GRStock
