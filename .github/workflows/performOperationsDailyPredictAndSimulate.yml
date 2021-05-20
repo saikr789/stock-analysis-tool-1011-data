@@ -202,7 +202,8 @@ jobs:
         continue-on-error: true
         run: |
           git pull origin master
-          git add Data/SimulationResult
+          git add Data/next_30_days.csv
+          git add Data/Simulation
           git commit -m "simulation `date +'%d-%m-%Y'`"
           git push origin master
   
