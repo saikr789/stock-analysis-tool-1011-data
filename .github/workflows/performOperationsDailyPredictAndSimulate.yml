@@ -35,8 +35,8 @@ jobs:
         continue-on-error: true
         run: |
           git pull origin master
-          git add Data/predict100.csv
-          git commit -m "predict `date +'%d-%m-%Y'`"
+          git add *
+          git commit -m "`date +'%d-%m-%Y'`"
           git push origin master
           
   predict200 :
@@ -68,8 +68,8 @@ jobs:
         continue-on-error: true
         run: |
           git pull origin master
-          git add Data/predict200.csv
-          git commit -m "predict `date +'%d-%m-%Y'`"
+          git add *
+          git commit -m "`date +'%d-%m-%Y'`"
           git push origin master
           
   predict300:
@@ -101,8 +101,8 @@ jobs:
         continue-on-error: true
         run: |
           git pull origin master
-          git add Data/predict300.csv
-          git commit -m "predict `date +'%d-%m-%Y'`"
+          git add *
+          git commit -m "`date +'%d-%m-%Y'`"
           git push origin master
           
   predict400:
@@ -134,8 +134,8 @@ jobs:
         continue-on-error: true
         run: |
           git pull origin master
-          git add Data/predict400.csv
-          git commit -m "predict `date +'%d-%m-%Y'`"
+          git add *
+          git commit -m "`date +'%d-%m-%Y'`"
           git push origin master
           
   predict500:
@@ -167,8 +167,8 @@ jobs:
         continue-on-error: true
         run: |
           git pull origin master
-          git add Data/predict500.csv
-          git commit -m "predict `date +'%d-%m-%Y'`"
+          git add *
+          git commit -m "`date +'%d-%m-%Y'`"
           git push origin master
   
   simulate:
@@ -202,9 +202,8 @@ jobs:
         continue-on-error: true
         run: |
           git pull origin master
-          git add Data/next_30_days.csv
-          git add Data/Simulation
-          git commit -m "simulation `date +'%d-%m-%Y'`"
+          git add *
+          git commit -m "`date +'%d-%m-%Y'`"
           git push origin master
   
   topreturns:
@@ -237,6 +236,6 @@ jobs:
         continue-on-error: true
         run: |
           git pull origin master
-          git add Data/SimulationResult
-          git commit -m "top returns `date +'%d-%m-%Y'`"
+          git add *
+          git commit -m "`date +'%d-%m-%Y'`"
           git push origin master
