@@ -10,7 +10,6 @@ jobs:
   scraping:
     name : scraping
     runs-on: ubuntu-latest
-    continue-on-error: true
     steps:
       - name: Removing Unnecessary Files
         run: |
@@ -33,6 +32,7 @@ jobs:
           git config --global user.email "saikrishna.nama@msitprogram.net"
           
       - name: Index and Risk Free Rate Scrape
+        continue-on-error: true
         run: |
           python index_scrape.py
           python index_scrape.py
@@ -59,7 +59,6 @@ jobs:
   
   featurecreation:
     name : featurecreation
-    continue-on-error: true
     needs:  [scraping]
     runs-on: ubuntu-latest
     steps:
@@ -84,6 +83,7 @@ jobs:
           git config --global user.email "saikrishna.nama@msitprogram.net"
           
       - name: Feature Creation
+        continue-on-error: true
         run: |
           python feature_creation_daily.py
 
