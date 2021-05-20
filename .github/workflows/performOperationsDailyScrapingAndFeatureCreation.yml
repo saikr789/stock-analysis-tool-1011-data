@@ -7,9 +7,10 @@ on:
   schedule:
     - cron: "30 15 * * *"
 jobs:
-
   scraping:
+    name : scraping
     runs-on: ubuntu-latest
+    continue-on-error: true
     steps:
       - name: Removing Unnecessary Files
         run: |
@@ -57,6 +58,8 @@ jobs:
           git push origin master
   
   featurecreation:
+    name : featurecreation
+    continue-on-error: true
     needs:  [scraping]
     runs-on: ubuntu-latest
     steps:
