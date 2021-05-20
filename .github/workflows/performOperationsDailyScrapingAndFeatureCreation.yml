@@ -47,14 +47,8 @@ jobs:
         continue-on-error: true
         run: |
           git pull origin master
-          git add Data/Index.csv
-          git add Data/sp500.csv
-          git commit -m "Index `date +'%d-%m-%Y'`"
-          git add Data/RiskFreeRateFull.csv
-          git add Data/RiskFreeRate.csv
-          git commit -m "Risk Free Rate `date +'%d-%m-%Y'`"
-          git add Data/Stock
-          git commit -m "stock `date +'%d-%m-%Y'`"
+          git add *
+          git commit -m "`date +'%d-%m-%Y'`"
           git push origin master
   
   featurecreation:
@@ -91,7 +85,7 @@ jobs:
         continue-on-error: true
         run: |
           git pull origin master
-          git add Data/GRStock
-          git commit -m "gr stock `date +'%d-%m-%Y'`"
+          git add *
+          git commit -m "`date +'%d-%m-%Y'`"
           git push origin master
     
