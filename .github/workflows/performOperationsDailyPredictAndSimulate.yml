@@ -8,6 +8,7 @@ on:
 jobs:
   predict100:
     name: predict100
+    continue-on-error: true
     runs-on: ubuntu-latest
     steps:
       - name: Removing Unnecessary Files
@@ -172,6 +173,7 @@ jobs:
   
   simulate:
     name: simulate
+    continue-on-error: true
     needs:  [predict100,predict200,predict300,predict400,predict500]
     runs-on: ubuntu-latest
     steps:
@@ -197,6 +199,7 @@ jobs:
           git config --global user.name "saikr789"
           git config --global user.email "saikrishna.nama@msitprogram.net"
       - name: Commiting New Files
+        continue-on-error: true
         run: |
           git pull origin master
           git add Data/SimulationResult
@@ -205,6 +208,7 @@ jobs:
   
   topreturns:
     name: topreturns
+    continue-on-error: true
     needs:  simulate
     runs-on: ubuntu-latest
     steps:
@@ -229,6 +233,7 @@ jobs:
           git config --global user.name "saikr789"
           git config --global user.email "saikrishna.nama@msitprogram.net"
       - name: Commiting New Files
+        continue-on-error: true
         run: |
           git pull origin master
           git add Data/SimulationResult
