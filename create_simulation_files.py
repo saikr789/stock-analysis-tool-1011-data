@@ -1,9 +1,12 @@
 import os
 import pandas as pd
 import re
+import traceback
+import ray
 
 
-def create_files(filename,days):
+@ray.remote
+def create_files(filename, days):
     df = pd.read_csv(os.path.join(os.getcwd(), "Data", filename))
     df = df.dropna(how="all")
     simpath = os.path.join(os.getcwd(), "Data", "Simulation")
@@ -55,12 +58,19 @@ def create_files(filename,days):
             row["predicted ub %"] - row["predicted lb %"]) > 0.1 else False, axis=1)
         refdf["exit"] = refdf.apply(lambda row: True if row["predicted ub %"] < 0.01 and (
             row["predicted ub %"] + row["predicted lb %"]) > 0.05 else False, axis=1)
-        refdf.to_csv(os.path.join(simpath, str(n[:6])+"_"+str(days)+".csv"), index=None)
+        refdf.to_csv(os.path.join(simpath, str(
+            n[:6])+"_"+str(days)+".csv"), index=None)
 
+
+ray.init(ignore_reinit_error=True)
+result = []
 for days in [30, 60, 90, 180, 270, 360, 540, 720, 900, 1080]:
     try:
         filename = "next" + "_" + str(days) + "_" + "days" + ".csv"
-        create_files(filename, days)
+        result.append(create_files.remote(filename, days))
     except:
         traceback.print_exc()
-
+try:
+    ray.get(result)
+except:
+    pass

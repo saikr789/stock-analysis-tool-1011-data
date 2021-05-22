@@ -1,3 +1,4 @@
+import ray
 import pandas as pd
 import numpy as np
 import os
@@ -130,7 +131,8 @@ def run_models(df, col, security_code):
     return linres
 
 
-def run_companies_lb(security_code,col):
+@ray.remote
+def run_companies_lb(security_code, col):
     try:
         print(security_code)
         security_code = str(security_code)
@@ -145,7 +147,8 @@ def run_companies_lb(security_code,col):
         return None
 
 
-def run_companies_ub(security_code,col):
+@ray.remote
+def run_companies_ub(security_code, col):
     try:
         print(security_code)
         security_code = str(security_code)
@@ -164,19 +167,22 @@ def intial_run():
     result = []
     for security_code in sp500companies:
         try:
-            lbresult = run_companies_lb(security_code, columns_to_predict[10])
-            ubresult = run_companies_ub(security_code, columns_to_predict[11])
-            if lbresult != None and ubresult != None:
-                result.append(lbresult)
-                result.append(ubresult)
+            lbresult = run_companies_lb.remote(
+                security_code, columns_to_predict[10])
+            ubresult = run_companies_ub.remote(
+                security_code, columns_to_predict[11])
+            result = ray.get([lbresult, ubresult])
+
         except:
             traceback.print_exc()
     try:
-        if result != []:
+        if result[0] != None and result[1] != None:
             resultdf = pd.DataFrame(result)
-            resultdf.to_csv(os.path.join(os.getcwd(), "Data","next_720_days.csv"), index=None)
+            resultdf.to_csv(os.path.join(os.getcwd(), "Data",
+                            "next_720_days.csv"), index=None)
     except:
         pass
+
 
 necessary_columns = ["Date", "Close Price", "Previous 360 days UB", "Min Inc % in 180 days", "Next 60 days LB", "Previous 720 days UB", "No. of Trades GR", "CP % LV 180 days", "Max Inc % in 180 days", "Next 1080 days LB", "CP % BA 180 days", "Next Day Low Price GR", "Max Dec % in 90 days", "Expenditure GR", "CP % HV 90 days", "Min Dec % in 365 days", "Max Dec % in 365 days", "CP % HV 7 days", "CP % BA 7 days", "Avg Inc % in 365 days", "Min Inc % in 90 days", "Avg Inc % in 180 days", "Total Turnover (Rs.) GR", "Low Price GR", "Previous 1080 days UB", "CP % HV 180 days", "Next 180 days UB", "No.of Shares GR", "Previous 60 days UB", "CP % BA 90 days", "Avg Inc % in 90 days", "Sequential Increase %", "WAP GR", "CP % BA 30 days", "Avg Dec % in 180 days", "Previous 720 days LB", "EPS GR", "Deliverable Quantity GR", "Next 360 days UB", "CP % HV 365 days", "Spread Close-Open GR", "Min Dec % in 180 days", "Next 30 days LB", "Sequential Increase", "Previous 360 days LB",
                      "Alpha GR", "CP % LV 365 days", "Dividend Value GR", "Sequential Decrease", "Next 360 days LB", "Avg Dec % in 365 days", "Net Profit GR", "CP % LV 7 days", "CP % HV 30 days", "% Deli. Qty to Traded Qty GR", "Min Inc % in 365 days", "Sequential Decrease %", "Beta GR", "Next 30 days UB", "High Price GR", "Spread High-Low GR", "Income GR", "Max Dec % in 180 days", "Previous 30 days UB", "Next 90 days UB", "Next 90 days LB", "Next 1080 days UB", "Open Price GR", "Next 720 days LB", "Max Inc % in 365 days", "Previous 90 days LB", "Previous 90 days UB", "Next 60 days UB", "Avg Dec % in 90 days", "Previous 30 days LB", "Previous 1080 days LB", "Next Day Open Price GR", "Next Day High Price GR", "CP % BA 365 days", "Max Inc % in 90 days", "Revenue GR", "CP % LV 30 days", "Min Dec % in 90 days", "Next 180 days LB", "Previous 180 days LB", "Close Price GR", "CP % LV 90 days", "Previous 60 days LB", "Previous 180 days UB", "Next 720 days UB", "Next Day Close Price GR"]
@@ -187,4 +193,5 @@ path = os.path.join(os.getcwd(), "Data", "GRStock")
 sp500 = pd.read_csv(os.path.join(os.getcwd(), "Data", "SP500companies.csv"))
 sp500companies = sp500['Security Code'].values.tolist()
 sp500companies.sort()
+ray.init(ignore_reinit_error=True)
 intial_run()

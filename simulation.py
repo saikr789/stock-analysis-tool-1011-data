@@ -3,6 +3,7 @@ import pandas as pd
 import datetime
 import re
 import traceback
+import ray
 
 
 def simulation(df, investment, days):
@@ -59,9 +60,10 @@ def simulate(investment, days):
     for security_code in sp500.index.tolist():
         try:
             security_code = str(security_code)
-            spath = security_code + "_" + str(days) +".csv"
-            df = pd.read_csv(os.path.join(simpath,spath))
-            company = re.sub('[!@#$%^&*(.)-=,\\\/\']', '', sp500.loc[int(security_code), "Security Name"]).upper()
+            spath = security_code + "_" + str(days) + ".csv"
+            df = pd.read_csv(os.path.join(simpath, spath))
+            company = re.sub('[!@#$%^&*(.)-=,\\\/\']', '',
+                             sp500.loc[int(security_code), "Security Name"]).upper()
             result = simulation(df, investment, days)
             if result == None:
                 continue
@@ -75,10 +77,12 @@ def simulate(investment, days):
     topreturnscompanies = pd.DataFrame(topreturns)
     topreturnscompanies = topreturnscompanies.sort_values(
         by=["average_return_percent"], ascending=[False])
+    topreturnscompanies.to_csv(os.path.join(simrespath, "top_" +
+                                            str(days)+".csv"), index=None)
 
-    return topreturnscompanies
 
-sp500 = pd.read_csv(os.path.join(os.getcwd(), "Data", "SP500companies.csv")).set_index("Security Code")
+sp500 = pd.read_csv(os.path.join(os.getcwd(), "Data",
+                    "SP500companies.csv")).set_index("Security Code")
 
 simpath = os.path.join(os.getcwd(), "Data", "Simulation")
 simrespath = os.path.join(os.getcwd(), "Data", "SimulationResult")
@@ -86,9 +90,16 @@ simrespath = os.path.join(os.getcwd(), "Data", "SimulationResult")
 if not os.path.exists(simrespath):
     os.makedirs(simrespath)
 
+ray.init(ignore_reinit_error=True)
+result = []
+investment = 100000
 for days in [30, 60, 90, 180, 270, 360, 540, 720, 900, 1080]:
     try:
-        result = simulate(100000, days)
-        result.to_csv(os.path.join(simrespath, "top_" + str(days)+".csv"), index=None)
+        result.append(simulate.remote(investment, days))
     except:
         traceback.print_exc()
+
+try:
+    ray.get(result)
+except:
+    pass
