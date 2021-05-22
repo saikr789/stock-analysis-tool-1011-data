@@ -89,11 +89,15 @@ def perform(code):
 
 simpath = os.path.join(os.getcwd(), "Data", "Simulation")
 
+sp500 = pd.read_csv(os.path.join(os.getcwd(), "Data", "SP500companies.csv")).set_index("Security Code")
+
 myres = []
 for code in os.listdir(simpath):
     try:
         res = perform(int(code[:-4]))
-        res.update({"company": code})
+        res.update({"code": code})
+        company = re.sub('[!@#$%^&*(.)-=,\\\/\']','', sp500.loc[int(code), "Security Name"]).upper()
+        res.update({"company": company})
         myres.append(res)
     except:
         pass
