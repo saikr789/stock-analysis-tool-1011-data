@@ -76,30 +76,43 @@ def perform(code):
             resdf = resdf.append([res], ignore_index=True)
         except:
             pass
-    resdf.columns = columns
-    predrets = resdf.iloc[0]["investment"] + resdf.iloc[0]["investment"] * \
-        resdf["predicted_returns_percent"].mean()
-    finres = simulation(df, 100000, 180, 0)
-    finres.update({"actual_returns": resdf["actual_returns"].iloc[0]})
-    finres.update({"predicted_returns": predrets})
-    finres.update(
-        {"predicted_returns_percent": resdf["predicted_returns_percent"].mean()})
-    return finres
-
-
-simpath = os.path.join(os.getcwd(), "Data", "Simulation")
+    try:
+        resdf.columns = columns
+        predrets = resdf.iloc[0]["investment"] + resdf.iloc[0]["investment"] * \
+            resdf["predicted_returns_percent"].mean()
+        finres = simulation(df, 100000, 180, 0)
+        finres.update({"actual_returns": resdf["actual_returns"].iloc[0]})
+        finres.update({"predicted_returns": predrets})
+        finres.update(
+            {"predicted_returns_percent": resdf["predicted_returns_percent"].mean()})
+        return finres
+    
+    except:
+        pass
 
 sp500 = pd.read_csv(os.path.join(os.getcwd(), "Data", "SP500companies.csv")).set_index("Security Code")
 
-myres = []
-for code in os.listdir(simpath):
+simpath = os.path.join(os.getcwd(), "Data", "Simulation")
+simrespath = os.path.join(os.getcwd(), "Data", "SimulationResult")
+
+if not os.path.exists(simrespath):
+    os.makedirs(simrespath)
+
+for days in [30, 60, 90, 180, 270, 360, 540, 720, 900, 1080]:
     try:
-        res = perform(int(code[:-4]))
-        res.update({"code": code})
-        company = re.sub('[!@#$%^&*(.)-=,\\\/\']','', sp500.loc[int(code), "Security Name"]).upper()
-        res.update({"company": company})
-        myres.append(res)
+        myres = []
+        for code,name in sp500.iterrows():
+            try:
+                res = perform(int(code))
+                if res == None:
+                    continue
+                res.update({"code": code})
+                company = re.sub('[!@#$%^&*(.)-=,\\\/\']','', name).upper()
+                res.update({"company": company})
+                myres.append(res)
+            except:
+                pass
+        myresdf = pd.DataFrame(myres)
+        myresdf.to_csv(os.path.join(simrespath, "new_top_"+str(days)), index=None)
     except:
-        pass
-myresdf = pd.DataFrame(myres)
-myresdf.to_csv(os.path.join(simpath, "myresdf.csv"), index=None)
+        traceback.print_exc()
