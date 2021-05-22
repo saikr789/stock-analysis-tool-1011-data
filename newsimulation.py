@@ -113,6 +113,7 @@ for days in [30, 60, 90, 180, 270, 360, 540, 720, 900, 1080]:
             except:
                 pass
         myresdf = pd.DataFrame(myres)
+        myresdf = myresdf.sort_values(by=["average_return_percent"], ascending=[False])
         myresdf.to_csv(os.path.join(simrespath, "new_top_"+str(days)), index=None)
     except:
         traceback.print_exc()
