@@ -59,33 +59,28 @@ def simulate(investment, days):
     for security_code in sp500.index.tolist():
         try:
             security_code = str(security_code)
-            df = pd.read_csv(os.path.join(path, security_code+".csv"))
-            company = re.sub('[!@#$%^&*(.)-=,\\\/\']',
-                             '', sp500.loc[int(security_code), "Security Name"]).upper()
-            result = simulation(
-                df, investment, days)
+            spath = security_code + "_" + str(days) +".csv"
+            df = pd.read_csv(os.path.join(simpath,spath))
+            company = re.sub('[!@#$%^&*(.)-=,\\\/\']', '', sp500.loc[int(security_code), "Security Name"]).upper()
+            result = simulation(df, investment, days)
             if result == None:
                 continue
             result.update({"company": company})
             result.update({"code": security_code})
             topreturns.append(result)
-            simpath = os.path.join(simrespath, str(
-                security_code) + "_" + str(days) + ".csv")
             simdf = pd.DataFrame(result["simulation_result"])
-            simdf.to_csv(simpath, index=None)
+            simdf.to_csv(os.path.join(simrespath, spath), index=None)
         except:
             traceback.print_exc()
     topreturnscompanies = pd.DataFrame(topreturns)
     topreturnscompanies = topreturnscompanies.sort_values(
         by=["average_return_percent"], ascending=[False])
 
-    return topreturnscompanies[["company", "code", "average_return_percent", "simulation_result"]]
+    return topreturnscompanies
 
+sp500 = pd.read_csv(os.path.join(os.getcwd(), "Data", "SP500companies.csv")).set_index("Security Code")
 
-sp500 = pd.read_csv(os.path.join(
-    os.getcwd(), "Data", "SP500companies.csv")).set_index("Security Code")
-
-path = os.path.join(os.getcwd(), "Data", "Simulation")
+simpath = os.path.join(os.getcwd(), "Data", "Simulation")
 simrespath = os.path.join(os.getcwd(), "Data", "SimulationResult")
 
 if not os.path.exists(simrespath):
@@ -94,7 +89,6 @@ if not os.path.exists(simrespath):
 for days in [30, 60, 90, 180, 270, 360, 540, 720, 900, 1080]:
     try:
         result = simulate(100000, days)
-        result.to_csv(os.path.join(simrespath, "top_" +
-                      str(days)+".csv"), index=None)
+        result.to_csv(os.path.join(simrespath, "top_" + str(days)+".csv"), index=None)
     except:
         traceback.print_exc()
