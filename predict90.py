@@ -174,7 +174,7 @@ def intial_run():
     try:
         if result != []:
             resultdf = pd.DataFrame(result)
-            resultdf.to_csv(os.path.join(os.getcwd(), "Data","next_60_days.csv"), index=None)
+            resultdf.to_csv(os.path.join(os.getcwd(), "Data","next_90_days.csv"), index=None)
     except:
         pass
 
