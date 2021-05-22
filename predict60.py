@@ -164,8 +164,8 @@ def intial_run():
     result = []
     for security_code in sp500companies:
         try:
-            lbresult = run_companies_lb(security_code, columns_to_predict[1])
-            ubresult = run_companies_ub(security_code, columns_to_predict[2])
+            lbresult = run_companies_lb(security_code, columns_to_predict[2])
+            ubresult = run_companies_ub(security_code, columns_to_predict[3])
             if lbresult != None and ubresult != None:
                 result.append(lbresult)
                 result.append(ubresult)
