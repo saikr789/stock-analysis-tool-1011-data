@@ -240,7 +240,7 @@ jobs:
   createsimulationfiles:
     name: createsimulationfiles
     continue-on-error: true
-    needs: [predict30, predict200, predict90, predict180, predict360, predict720, predict1080]
+    needs: [predict30, predict60, predict90, predict180, predict360, predict720, predict1080]
     runs-on: ubuntu-latest
     steps:
       - name: Removing Unnecessary Files
