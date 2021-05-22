@@ -4,5 +4,5 @@ pandas
 bs4
 lxml
 html5lib 
-kernel-run
+ray
 scikit-learn
