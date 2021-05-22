@@ -35,12 +35,12 @@ jobs:
      
       - name: Check Git Status
         run: |
-          python newsimulation.py
+          python simulation.py
           echo "FREE_GIG_BEFORE=$(df --output=avail --sync -BG "${{ github.workspace }}" | tail -1 | sed 's/[^0-9]*//g')" >> $GITHUB_ENV
      
       - name: Commiting New Files
         run: |
           git pull origin master
-          git add Data/Simulation
-          git commit -m "simmulation `date +'%d-%m-%Y'`"
+          git add *
+          git commit -m "`date +'%d-%m-%Y'`"
           git push origin master
