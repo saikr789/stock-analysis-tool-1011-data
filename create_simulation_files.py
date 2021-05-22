@@ -3,8 +3,8 @@ import pandas as pd
 import re
 
 
-def create_files():
-    df = pd.read_csv(os.path.join(os.getcwd(), "Data", "next_30_days.csv"))
+def create_files(filename,days):
+    df = pd.read_csv(os.path.join(os.getcwd(), "Data", filename))
     df = df.dropna(how="all")
     simpath = os.path.join(os.getcwd(), "Data", "Simulation")
     if not os.path.exists(simpath):
@@ -55,7 +55,12 @@ def create_files():
             row["predicted ub %"] - row["predicted lb %"]) > 0.1 else False, axis=1)
         refdf["exit"] = refdf.apply(lambda row: True if row["predicted ub %"] < 0.01 and (
             row["predicted ub %"] + row["predicted lb %"]) > 0.05 else False, axis=1)
-        refdf.to_csv(os.path.join(simpath, str(n[:6])+".csv"), index=None)
+        refdf.to_csv(os.path.join(simpath, str(n[:6])+"_"+str(days)+".csv"), index=None)
 
+for days in [30, 60, 90, 180, 270, 360, 540, 720, 900, 1080]:
+    try:
+        filename = "next" + "_" + str(days) + "_" + "days" + ".csv"
+        create_files(filename, days)
+    except:
+        traceback.print_exc()
 
-create_files()
