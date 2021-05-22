@@ -35,7 +35,7 @@ jobs:
      
       - name: Check Git Status
         run: |
-          python simulation.py
+          python newsimulation.py
           echo "FREE_GIG_BEFORE=$(df --output=avail --sync -BG "${{ github.workspace }}" | tail -1 | sed 's/[^0-9]*//g')" >> $GITHUB_ENV
      
       - name: Commiting New Files
