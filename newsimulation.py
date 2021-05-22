@@ -54,15 +54,15 @@ def simulation(df, investment, days, i):
         pass
 
 
-def perform(code):
+def perform(code,days):
     df = pd.read_csv(os.path.join(simpath, str(code)+".csv"))
     df['date'] = pd.to_datetime(df['date'])
     resdf = pd.DataFrame()
     columns = ["entry", "exit", "investment", "actual_returns", "predicted_returns",
                "actual_returns_percent", "predicted_returns_percent", "predicted_actual_percent_diff"]
-    for i in range(0, 180):
+    for i in range(0, days):
         try:
-            result = simulation(df, 100000, 180, i)
+            result = simulation(df, 100000, days, i)
             simulation_result = result["simulation_result"]
             start = simulation_result[0]
             end = simulation_result[-1]
@@ -103,7 +103,7 @@ for days in [30, 60, 90, 180, 270, 360, 540, 720, 900, 1080]:
         myres = []
         for code,name in sp500.iterrows():
             try:
-                res = perform(int(code))
+                res = perform(int(code),days)
                 if res == None:
                     continue
                 res.update({"code": code})
