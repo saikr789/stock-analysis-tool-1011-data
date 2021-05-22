@@ -6,8 +6,8 @@ on:
   schedule:
     - cron: "30 18 * * *"
 jobs:
-  predict100:
-    name: predict100
+  predict30:
+    name: predict30
     continue-on-error: true
     runs-on: ubuntu-latest
     steps:
@@ -24,9 +24,9 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
-      - name: Predict 100
+      - name: predict30
         run: |
-          python predict100.py
+          python predict30.py
       - name: Setup Github Config
         run: |
           git config --global user.name "saikr789"
@@ -38,9 +38,9 @@ jobs:
           git add *
           git commit -m "`date +'%d-%m-%Y'`"
           git push origin master
-          
-  predict200 :
-    name: predict200
+
+  predict60:
+    name: predict60
     continue-on-error: true
     runs-on: ubuntu-latest
     steps:
@@ -57,9 +57,9 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
-      - name: Predict 200
+      - name: predict60
         run: |
-          python predict200.py
+          python predict60.py
       - name: Setup Github Config
         run: |
           git config --global user.name "saikr789"
@@ -71,9 +71,9 @@ jobs:
           git add *
           git commit -m "`date +'%d-%m-%Y'`"
           git push origin master
-          
-  predict300:
-    name: predict300
+
+  predict90:
+    name: predict90
     continue-on-error: true
     runs-on: ubuntu-latest
     steps:
@@ -90,9 +90,9 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
-      - name: Predict 300
+      - name: predict90
         run: |
-          python predict300.py
+          python predict90.py
       - name: Setup Github Config
         run: |
           git config --global user.name "saikr789"
@@ -104,9 +104,9 @@ jobs:
           git add *
           git commit -m "`date +'%d-%m-%Y'`"
           git push origin master
-          
-  predict400:
-    name: predict400
+
+  predict180:
+    name: predict180
     continue-on-error: true
     runs-on: ubuntu-latest
     steps:
@@ -123,9 +123,9 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
-      - name: Predict 400
+      - name: predict180
         run: |
-          python predict400.py
+          python predict180.py
       - name: Setup Github Config
         run: |
           git config --global user.name "saikr789"
@@ -137,9 +137,9 @@ jobs:
           git add *
           git commit -m "`date +'%d-%m-%Y'`"
           git push origin master
-          
-  predict500:
-    name: predict500
+
+  predict360:
+    name: predict360
     continue-on-error: true
     runs-on: ubuntu-latest
     steps:
@@ -156,9 +156,9 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
-      - name: Predict 500
+      - name: predict360
         run: |
-          python predict500.py
+          python predict360.py
       - name: Setup Github Config
         run: |
           git config --global user.name "saikr789"
@@ -170,11 +170,10 @@ jobs:
           git add *
           git commit -m "`date +'%d-%m-%Y'`"
           git push origin master
-  
-  simulate:
-    name: simulate
+
+  predict720:
+    name: predict720
     continue-on-error: true
-    needs:  [predict100,predict200,predict300,predict400,predict500]
     runs-on: ubuntu-latest
     steps:
       - name: Removing Unnecessary Files
@@ -190,9 +189,75 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
-      - name: Simulate
+      - name: predict720
         run: |
-          python combine.py
+          python predict720.py
+      - name: Setup Github Config
+        run: |
+          git config --global user.name "saikr789"
+          git config --global user.email "saikrishna.nama@msitprogram.net"
+      - name: Commiting New Files
+        continue-on-error: true
+        run: |
+          git pull origin master
+          git add *
+          git commit -m "`date +'%d-%m-%Y'`"
+          git push origin master
+
+  predict1080:
+    name: predict1080
+    continue-on-error: true
+    runs-on: ubuntu-latest
+    steps:
+      - name: Removing Unnecessary Files
+        run: |
+          sudo rm -rf /usr/local/lib/android
+          sudo rm -rf /usr/share/dotnet
+      - uses: actions/checkout@v2
+      - name: Set up Python 3.9
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.9
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+      - name: predict1080
+        run: |
+          python predict1080.py
+      - name: Setup Github Config
+        run: |
+          git config --global user.name "saikr789"
+          git config --global user.email "saikrishna.nama@msitprogram.net"
+      - name: Commiting New Files
+        continue-on-error: true
+        run: |
+          git pull origin master
+          git add *
+          git commit -m "`date +'%d-%m-%Y'`"
+          git push origin master
+
+  createsimulationfiles:
+    name: createsimulationfiles
+    continue-on-error: true
+    needs: [predict30, predict200, predict90, predict180, predict360, predict720, predict1080]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Removing Unnecessary Files
+        run: |
+          sudo rm -rf /usr/local/lib/android
+          sudo rm -rf /usr/share/dotnet
+      - uses: actions/checkout@v2
+      - name: Set up Python 3.9
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.9
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+      - name: Create Simulation Files
+        run: |
           python create_simulation_files.py
       - name: Setup Github Config
         run: |
@@ -205,11 +270,11 @@ jobs:
           git add *
           git commit -m "`date +'%d-%m-%Y'`"
           git push origin master
-  
-  topreturns:
-    name: topreturns
+
+  simulate:
+    name: simulate
     continue-on-error: true
-    needs:  simulate
+    needs: createsimulationfiles
     runs-on: ubuntu-latest
     steps:
       - name: Removing Unnecessary Files
