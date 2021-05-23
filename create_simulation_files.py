@@ -5,7 +5,6 @@ import traceback
 import ray
 import time
 
-@ray.remote
 def create_files(filename, days):
     df = pd.read_csv(os.path.join(os.getcwd(), "Data", filename))
     df = df.dropna(how="all")
@@ -62,18 +61,10 @@ def create_files(filename, days):
             n[:6])+"_"+str(days)+".csv"), index=None)
 
 
-ray.init(ignore_reinit_error=True)
-
 result = []
 for days in [30, 60, 90, 180, 270, 360, 540, 720, 900, 1080]:
     try:
         filename = "next" + "_" + str(days) + "_" + "days" + ".csv"
-        result.append(create_files.remote(filename, days))
+        create_files.remote(filename, days)
     except:
         traceback.print_exc()
-try:
-    ray.get(result)
-except:
-    pass
-
-time.sleep(30)
