@@ -3,7 +3,7 @@ import pandas as pd
 import re
 import traceback
 import ray
-
+import time
 
 @ray.remote
 def create_files(filename, days):
@@ -63,6 +63,7 @@ def create_files(filename, days):
 
 
 ray.init(ignore_reinit_error=True)
+
 result = []
 for days in [30, 60, 90, 180, 270, 360, 540, 720, 900, 1080]:
     try:
@@ -74,3 +75,5 @@ try:
     ray.get(result)
 except:
     pass
+
+time.sleep(30)
