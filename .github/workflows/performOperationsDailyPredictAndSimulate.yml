@@ -259,39 +259,6 @@ jobs:
       - name: Create Simulation Files
         run: |
           python create_simulation_files.py
-      - name: Setup Github Config
-        run: |
-          git config --global user.name "saikr789"
-          git config --global user.email "saikrishna.nama@msitprogram.net"
-      - name: Commiting New Files
-        continue-on-error: true
-        run: |
-          git pull origin master
-          git add *
-          git commit -m "`date +'%d-%m-%Y'`"
-          git push origin master
-
-  simulate:
-    name: simulate
-    continue-on-error: true
-    needs: createsimulationfiles
-    runs-on: ubuntu-latest
-    steps:
-      - name: Removing Unnecessary Files
-        run: |
-          sudo rm -rf /usr/local/lib/android
-          sudo rm -rf /usr/share/dotnet
-      - uses: actions/checkout@v2
-      - name: Set up Python 3.8
-        uses: actions/setup-python@v2
-        with:
-          python-version: 3.8
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install -r requirements.txt
-      - name: Top Companies
-        run: |
           python simulation.py
       - name: Setup Github Config
         run: |
