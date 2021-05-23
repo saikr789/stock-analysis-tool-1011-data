@@ -173,7 +173,7 @@ def intial_run():
                 security_code, columns_to_predict[9])
             result = ray.get([lbresult, ubresult])
             if result[0] != None and result[1] != None:
-                fullresult.append(result)
+                fullresult.extend(result)
         except:
             traceback.print_exc()
     resultdf = pd.DataFrame(fullresult)
