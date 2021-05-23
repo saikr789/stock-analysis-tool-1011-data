@@ -167,9 +167,9 @@ def intial_run():
         try:
             print(security_code)
             lbresult = run_companies_lb.remote(
-                security_code, columns_to_predict[9])
-            ubresult = run_companies_ub.remote(
                 security_code, columns_to_predict[10])
+            ubresult = run_companies_ub.remote(
+                security_code, columns_to_predict[11])
             result = ray.get([lbresult, ubresult])
             if result[0] != None and result[1] != None:
                 fullresult.extend(result)
