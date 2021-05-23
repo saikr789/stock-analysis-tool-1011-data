@@ -4,6 +4,7 @@ import re
 import traceback
 import ray
 import time
+pd.options.mode.chained_assignment = None
 
 def create_files(filename, days):
     df = pd.read_csv(os.path.join(os.getcwd(), "Data", filename))
