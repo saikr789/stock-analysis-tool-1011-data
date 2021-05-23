@@ -4,5 +4,4 @@ pandas
 bs4
 lxml
 html5lib 
-ray
 scikit-learn
