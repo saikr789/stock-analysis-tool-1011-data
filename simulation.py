@@ -4,7 +4,7 @@ import datetime
 import re
 import traceback
 import ray
-
+pd.options.mode.chained_assignment = None
 
 def simulation(df, investment, days):
     invest = False
