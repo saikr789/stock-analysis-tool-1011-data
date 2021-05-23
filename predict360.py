@@ -11,7 +11,7 @@ from sklearn import metrics
 import traceback
 import warnings
 warnings.filterwarnings("ignore")
-
+pd.options.mode.chained_assignment = None
 
 def pre_process_data(df, null_threshold):
     """
@@ -134,7 +134,6 @@ def run_models(df, col, security_code):
 @ray.remote
 def run_companies_lb(security_code, col):
     try:
-        print(security_code)
         security_code = str(security_code)
         df = pd.read_csv(os.path.join(path, "gr"+security_code+".csv"))
         df = df.iloc[::-1].reset_index(drop=True)
@@ -150,7 +149,6 @@ def run_companies_lb(security_code, col):
 @ray.remote
 def run_companies_ub(security_code, col):
     try:
-        print(security_code)
         security_code = str(security_code)
         df = pd.read_csv(os.path.join(path, "gr"+security_code+".csv"))
         df = df.iloc[::-1].reset_index(drop=True)
@@ -167,6 +165,7 @@ def intial_run():
     fullresult = []
     for security_code in sp500companies:
         try:
+            print(security_code)
             lbresult = run_companies_lb.remote(
                 security_code, columns_to_predict[8])
             ubresult = run_companies_ub.remote(
