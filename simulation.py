@@ -54,7 +54,7 @@ def simulation(df, investment, days):
         pass
         return None
 
-
+@ray.remote
 def simulate(investment, days):
     topreturns = []
     for security_code in sp500.index.tolist():
