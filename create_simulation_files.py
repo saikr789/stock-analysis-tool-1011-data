@@ -2,7 +2,6 @@ import os
 import pandas as pd
 import re
 import traceback
-import ray
 import time
 pd.options.mode.chained_assignment = None
 
@@ -66,7 +65,7 @@ result = []
 for days in [30, 60, 90, 180, 270, 360, 540, 720, 900, 1080]:
     try:
         filename = "next" + "_" + str(days) + "_" + "days" + ".csv"
-        create_files.remote(filename, days)
+        create_files(filename, days)
     except:
         traceback.print_exc()
 time.sleep(100) 
