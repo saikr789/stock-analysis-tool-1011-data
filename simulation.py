@@ -75,11 +75,11 @@ def simulate(investment, days):
             traceback.print_exc()
     if topreturns == []:
         return
+    cols = ["company","code","average_return_percent","simulation_result"]
     topreturnscompanies = pd.DataFrame(topreturns)
-    topreturnscompanies = topreturnscompanies.sort_values(
-        by=["average_return_percent"], ascending=[False])
-    topreturnscompanies.to_csv(os.path.join(simrespath, "top_" +
-                                            str(days)+".csv"), index=None)
+    topreturnscompanies = topreturnscompanies[cols]
+    topreturnscompanies = topreturnscompanies.sort_values(by=["average_return_percent"], ascending=[False])
+    topreturnscompanies.to_csv(os.path.join(simrespath, "top_" + str(days)+".csv"), index=None)
 
 
 sp500 = pd.read_csv(os.path.join(os.getcwd(), "Data",
