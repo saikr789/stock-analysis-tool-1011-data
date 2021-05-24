@@ -1,15 +1,16 @@
 import os
 import pandas as pd
+import traceback
 import datetime
 import re
-import traceback
+import ray
 
 
 def simulation(df, investment, days, i):
     invest = False
     shares = 0
     df['date'] = pd.to_datetime(df['date'])
-    start = df.iloc[-1]['date'] - datetime.timedelta(days=i)
+    start = df.iloc[0]['date'] - datetime.timedelta(days=i)
     end = start - datetime.timedelta(days=days)
     refdf = df[df['date'].between(end, start)]
     simulation_result = []
@@ -54,66 +55,85 @@ def simulation(df, investment, days, i):
         pass
 
 
-def perform(code,days):
-    df = pd.read_csv(os.path.join(simpath, str(code)+".csv"))
-    df['date'] = pd.to_datetime(df['date'])
-    resdf = pd.DataFrame()
-    columns = ["entry", "exit", "investment", "actual_returns", "predicted_returns",
-               "actual_returns_percent", "predicted_returns_percent", "predicted_actual_percent_diff"]
-    for i in range(0, days):
-        try:
-            result = simulation(df, 100000, days, i)
-            simulation_result = result["simulation_result"]
-            start = simulation_result[0]
-            end = simulation_result[-1]
-            predrets = start['predictedub'] * start['close'] * start['shares']
-            actrets = end['close'] * end['shares']
-            invst = start['investment']
-            apercent = (actrets-invst)/invst
-            ppercent = (predrets-invst)/invst
-            res = [start['date'], end['date'], start['investment'],
-                   actrets, predrets, apercent, ppercent, ppercent-apercent]
-            resdf = resdf.append([res], ignore_index=True)
-        except:
-            pass
+@ray.remote
+def simulate(code, days, company):
     try:
-        resdf.columns = columns
-        predrets = resdf.iloc[0]["investment"] + resdf.iloc[0]["investment"] * \
-            resdf["predicted_returns_percent"].mean()
-        finres = simulation(df, 100000, 180, 0)
-        finres.update({"actual_returns": resdf["actual_returns"].iloc[0]})
-        finres.update({"predicted_returns": predrets})
-        finres.update(
-            {"predicted_returns_percent": resdf["predicted_returns_percent"].mean()})
-        return finres
-    
-    except:
-        pass
+        df = pd.read_csv(os.path.join(simpath, str(code)+"_"+str(days)))
+        df['date'] = pd.to_datetime(df['date'])
+        df = df.iloc[::-1]
+        df = df.reset_index(drop=True)
+        result = []
+        investment = 100000
+        actstart = df.iloc[0]['date']
+        actend = df.iloc[-1]['date']
+        for i in range((actstart-actend).days):
+            start = df.iloc[0]['date'] - datetime.timedelta(days=i)
+            end = start - datetime.timedelta(days=days)
+            res = simulation(df, investment, days, i)
+            if res != None:
+                result.append(res)
+            if (end-actend).days == 0:
+                break
 
-sp500 = pd.read_csv(os.path.join(os.getcwd(), "Data", "SP500companies.csv")).set_index("Security Code")
+        rows = []
+        for res in result:
+            curdf = pd.DataFrame(res["simulation_result"])
+            curdf["actual_returns"] = curdf["investment"]
+            curdf["predicted_returns"] = curdf["predictedub"] * \
+                curdf["shares"] * curdf["close"]
+            curdf["actual_returns"] = curdf.apply(
+                lambda row: None if row["entry"] else row["actual_returns"], axis=1)
+            curdf["predicted_returns"] = curdf.apply(
+                lambda row: None if row["exit"] else row["predicted_returns"], axis=1)
+            curdf["actual_returns_percent"] = (
+                curdf["actual_returns"].shift(-1) - curdf["investment"]) / curdf["investment"]
+            curdf["predicted_returns_percent"] = (
+                curdf["predicted_returns"] - curdf["investment"]) / curdf["investment"]
+            curdf["returns_percent_diff"] = curdf["predicted_returns_percent"] - \
+                curdf["actual_returns_percent"]
+            rows.append([curdf["actual_returns_percent"].mean(),
+                        curdf["predicted_returns_percent"].mean()])
+
+        soldf = pd.DataFrame(
+            rows, columns=["actual_returns_percent", "predicted_returns_percent"])
+        soldf["returns_percent_diff"] = soldf["predicted_returns_percent"] - \
+            soldf["actual_returns_percent"]
+        posmean = soldf[soldf["returns_percent_diff"]
+                        > 0]["returns_percent_diff"].mean()
+        negmean = soldf[soldf["returns_percent_diff"]
+                        < 0]["returns_percent_diff"].mean()
+        actmean = soldf["actual_returns_percent"].mean()
+        predmean = soldf["predicted_returns_percent"].mean()
+        left, right = (1 + negmean) * actmean, (1 + posmean) * actmean
+        return [code, company, actmean, predmean, left, right]
+    except:
+        return None
+
 
 simpath = os.path.join(os.getcwd(), "Data", "Simulation")
-simrespath = os.path.join(os.getcwd(), "Data", "SimulationResult")
 
-if not os.path.exists(simrespath):
-    os.makedirs(simrespath)
+sp500 = pd.read_csv(os.path.join(os.getcwd(), "Data",
+                    "SP500companies.csv")).set_index("Security Code")
 
-for days in [30, 60, 90, 180, 270, 360, 540, 720, 900, 1080]:
+ray.init(ignore_reinit_error=True)
+
+for days in [30, 60, 90, 180, 360, 720, 900, 1080]:
     try:
-        myres = []
-        for code,name in sp500.iterrows():
+        result = []
+        for code, name in sp500.iterrows():
             try:
-                res = perform(int(code),days)
-                if res == None:
-                    continue
-                res.update({"code": code})
-                company = re.sub('[!@#$%^&*(.)-=,\\\/\']','', name.values.tolist()[0]).upper()
-                res.update({"company": company})
-                myres.append(res)
+                company = re.sub('[!@#$%^&*(.)-=,\\\/\']', '',
+                                 name.values.tolist()[0]).upper()
+                result.append(simulate.remote(code, 30, company))
             except:
-                pass
-        myresdf = pd.DataFrame(myres)
-        myresdf = myresdf.sort_values(by=["average_return_percent"], ascending=[False])
-        myresdf.to_csv(os.path.join(simrespath, "new_top_"+str(days))+".csv", index=None)
+                traceback.print_exc()
+        simres = ray.get(result)
+        simres = [res for res in simres if res is not None]
+        columns = ["code", "company", "actual",
+                   "predicted", "minimun", "maximum"]
+        simdf = pd.DataFrame(simres, columns=columns)
+        simdf = simdf.sort_values(by=["actual"], ascending=[False])
+        simdf.to_csv(os.path.join(simpath, "simres" +
+                     "_"+str(days)+".csv"), index=None)
     except:
         traceback.print_exc()
