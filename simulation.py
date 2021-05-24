@@ -93,7 +93,7 @@ if not os.path.exists(simrespath):
 
 result = []
 investment = 100000
-for days in [30, 60, 90, 180, 270, 360, 540, 720, 900, 1080]:
+for days in [30, 60, 90, 180, 360, 720, 900, 1080]:
     try:
         simulate(investment, days)
     except:
