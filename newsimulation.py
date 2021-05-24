@@ -124,7 +124,7 @@ for days in [30, 60, 90, 180, 360, 720, 900, 1080]:
             try:
                 company = re.sub('[!@#$%^&*(.)-=,\\\/\']', '',
                                  name.values.tolist()[0]).upper()
-                result.append(simulate.remote(code, 30, company))
+                result.append(simulate.remote(code, days, company))
             except:
                 traceback.print_exc()
         simres = ray.get(result)
