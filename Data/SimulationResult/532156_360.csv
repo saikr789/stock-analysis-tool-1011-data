@@ -1,0 +1,5 @@
+investment,shares,entry,exit,date,close
+99750.0,120,True,False,10-06-2019,831.25
+102496.0,120,False,True,01-10-2019,852.05
+102192.29999999999,126,True,False,11-10-2019,811.05
+102256.6,126,False,True,17-10-2019,809.15
