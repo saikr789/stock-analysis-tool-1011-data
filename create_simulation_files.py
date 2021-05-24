@@ -62,7 +62,7 @@ def create_files(filename, days):
 
 
 result = []
-for days in [30, 60, 90, 180, 270, 360, 540, 720, 900, 1080]:
+for days in [30, 60, 90, 180, 360, 720, 1080]:
     try:
         filename = "next" + "_" + str(days) + "_" + "days" + ".csv"
         create_files(filename, days)
