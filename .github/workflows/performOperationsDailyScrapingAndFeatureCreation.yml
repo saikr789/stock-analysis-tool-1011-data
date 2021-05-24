@@ -77,12 +77,10 @@ jobs:
           git config --global user.email "saikrishna.nama@msitprogram.net"
           
       - name: Feature Creation
-        continue-on-error: true
         run: |
           python feature_creation_daily.py
 
       - name: Commit Files
-        continue-on-error: true
         run: |
           git pull origin master
           git add *
