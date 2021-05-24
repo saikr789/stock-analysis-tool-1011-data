@@ -111,7 +111,7 @@ def simulate(code, days, company):
 
 
 simpath = os.path.join(os.getcwd(), "Data", "Simulation")
-
+simrespath = os.path.join(os.getcwd(), "Data", "SimulationResult")
 sp500 = pd.read_csv(os.path.join(os.getcwd(), "Data",
                     "SP500companies.csv")).set_index("Security Code")
 
@@ -133,7 +133,7 @@ for days in [30, 60, 90, 180, 360, 720, 900, 1080]:
                    "predicted", "minimun", "maximum"]
         simdf = pd.DataFrame(simres, columns=columns)
         simdf = simdf.sort_values(by=["actual"], ascending=[False])
-        simdf.to_csv(os.path.join(simpath, "simres" +
+        simdf.to_csv(os.path.join(simrespath, "simres" +
                      "_"+str(days)+".csv"), index=None)
     except:
         traceback.print_exc()
