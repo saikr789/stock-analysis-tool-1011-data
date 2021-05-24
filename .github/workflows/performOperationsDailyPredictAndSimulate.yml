@@ -257,6 +257,7 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
       - name: Create Simulation Files
+        continue-on-error: true
         run: |
           python create_simulation_files.py
           python simulation.py
@@ -266,7 +267,6 @@ jobs:
           git config --global user.name "saikr789"
           git config --global user.email "saikrishna.nama@msitprogram.net"
       - name: Commiting New Files
-        continue-on-error: true
         run: |
           git pull origin master
           git add *
