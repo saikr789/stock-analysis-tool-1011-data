@@ -12,6 +12,7 @@ def simulation(df, investment, days):
     start = df.iloc[-1]['date']
     end = start - datetime.timedelta(days=days)
     refdf = df[df['date'].between(end, start)]
+    refdf = refdf.sort_values(by=["date"],ascending=[True])
     simulation_result = []
     for _, row in refdf.iterrows():
         if row["invest"]:
