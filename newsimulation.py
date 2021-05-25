@@ -5,7 +5,6 @@ import datetime
 import re
 import ray
 
-
 def simulation(df, investment, days, i):
     invest = False
     shares = 0
@@ -58,7 +57,8 @@ def simulation(df, investment, days, i):
 @ray.remote
 def simulate(code, days, company):
     try:
-        df = pd.read_csv(os.path.join(simpath, str(code)+"_"+str(days)))
+        print(code,company)
+        df = pd.read_csv(os.path.join(simpath, str(code)+"_"+str(days)+".csv"))
         df['date'] = pd.to_datetime(df['date'])
         df = df.iloc[::-1]
         df = df.reset_index(drop=True)
@@ -106,7 +106,7 @@ def simulate(code, days, company):
         predmean = soldf["predicted_returns_percent"].mean()
         left, right = (1 + negmean) * actmean, (1 + posmean) * actmean
         return [code, company, actmean, predmean, left, right]
-    except:
+    except :
         return None
 
 
@@ -116,9 +116,9 @@ sp500 = pd.read_csv(os.path.join(os.getcwd(), "Data",
                     "SP500companies.csv")).set_index("Security Code")
 
 ray.init(ignore_reinit_error=True)
-
 for days in [30, 60, 90, 180, 360, 720, 900, 1080]:
     try:
+        print(days)
         result = []
         for code, name in sp500.iterrows():
             try:
