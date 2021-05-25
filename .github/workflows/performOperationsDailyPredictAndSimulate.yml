@@ -260,7 +260,42 @@ jobs:
         continue-on-error: true
         run: |
           python create_simulation_files.py
+          git add *
           python simulation.py
+      - name: Setup Github Config
+        run: |
+          git config --global user.name "saikr789"
+          git config --global user.email "saikrishna.nama@msitprogram.net"
+      - name: Commiting New Files
+        run: |
+          git pull origin master
+          git add *
+          git commit -m "`date +'%d-%m-%Y'`"
+          git push origin master
+          
+          
+  newsimulation:
+    name: newsimulation
+    continue-on-error: true
+    needs: [createsimulationfiles]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Removing Unnecessary Files
+        run: |
+          sudo rm -rf /usr/local/lib/android
+          sudo rm -rf /usr/share/dotnet
+      - uses: actions/checkout@v2
+      - name: Set up Python 3.8
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.8
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+      - name: Create New Simulation
+        continue-on-error: true
+        run: |
           python newsimulation.py
       - name: Setup Github Config
         run: |
