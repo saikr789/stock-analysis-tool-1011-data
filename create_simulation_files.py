@@ -21,6 +21,7 @@ def create_files(filename, days):
     df['company'] = df['company'].apply(
         lambda row: str(int(row)) + "-" + re.sub('[!@#$%^&*(.)-=,\\\/\']', '', sp500.loc[int(row), "Security Name"]).upper())
     for n, g in df.groupby(by=['company']):
+        print(n)
         lower = g.iloc[0]
         upper = g.iloc[1]
 
@@ -64,8 +65,9 @@ def create_files(filename, days):
 result = []
 for days in [30, 60, 90, 180, 360, 720, 1080]:
     try:
+        print(days)
         filename = "next" + "_" + str(days) + "_" + "days" + ".csv"
         create_files(filename, days)
     except:
         traceback.print_exc()
-time.sleep(100) 
+time.sleep(100)
