@@ -120,7 +120,7 @@ sp500 = pd.read_csv(os.path.join(os.getcwd(), "Data",
                     "SP500companies.csv")).set_index("Security Code")
 
 ray.init(ignore_reinit_error=True)
-for days in [30, 60, 90, 180, 360, 720, 900, 1080]:
+for days in [30, 60, 90, 180, 360, 720, 1080]:
     try:
         print(days)
         result = []
