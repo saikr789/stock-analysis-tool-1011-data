@@ -70,7 +70,7 @@ def simulate(code, days, company):
         for i in range((actstart-actend).days):
             start = df.iloc[0]['date'] - datetime.timedelta(days=i)
             end = start - datetime.timedelta(days=days)
-            if (end-actend).days == 0:
+            if (end-actend).days <= 0:
                 break
             res = simulation(df, investment, days, i)
             if res != None:
@@ -133,13 +133,12 @@ for days in [30, 60, 90, 180, 360, 720, 900, 1080]:
                 traceback.print_exc()
         simres = ray.get(result)
         simres = [res for res in simres if res is not None]
-        if simres == []:
-            return
-        columns = ["code", "company", "actual",
-                   "predicted", "minimun", "maximum"]
-        simdf = pd.DataFrame(simres, columns=columns)
-        simdf = simdf.sort_values(by=["actual"], ascending=[False])
-        simdf.to_csv(os.path.join(simrespath, "simres" +
-                     "_"+str(days)+".csv"), index=None)
+        if simres != []:
+            columns = ["code", "company", "actual",
+                       "predicted", "minimun", "maximum"]
+            simdf = pd.DataFrame(simres, columns=columns)
+            simdf = simdf.sort_values(by=["actual"], ascending=[False])
+            simdf.to_csv(os.path.join(simrespath, "simres" +
+                         "_"+str(days)+".csv"), index=None)
     except:
         traceback.print_exc()
