@@ -69,12 +69,12 @@ def simulate(code, days, company):
         for i in range((actstart-actend).days):
             start = df.iloc[0]['date'] - datetime.timedelta(days=i)
             end = start - datetime.timedelta(days=days)
+            if (end-actend).days == 0:
+                break
             res = simulation(df, investment, days, i)
             if res != None:
                 result.append(res)
-            if (end-actend).days == 0:
-                break
-
+            
         rows = []
         for res in result:
             curdf = pd.DataFrame(res["simulation_result"])
