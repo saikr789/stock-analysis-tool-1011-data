@@ -132,6 +132,8 @@ for days in [30, 60, 90, 180, 360, 720, 900, 1080]:
                 traceback.print_exc()
         simres = ray.get(result)
         simres = [res for res in simres if res is not None]
+        if simres == []:
+            return
         columns = ["code", "company", "actual",
                    "predicted", "minimun", "maximum"]
         simdf = pd.DataFrame(simres, columns=columns)
