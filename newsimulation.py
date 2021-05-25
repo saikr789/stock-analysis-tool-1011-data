@@ -45,10 +45,13 @@ def simulation(df, investment, days, i):
         return None
     returns = []
     for i in range(0, len(simulation_result), 2):
-        a = simulation_result[i]['investment']
-        b = simulation_result[i+1]['investment']
-        r = ((b-a)/a)
-        returns.append(r)
+        try:
+            a = simulation_result[i]['investment']
+            b = simulation_result[i+1]['investment']
+            r = ((b-a)/a)
+            returns.append(r)
+        except:
+            pass
     try:
         average_return_percent = sum(returns)/len(returns)
         return {"average_return_percent": average_return_percent, "simulation_result": simulation_result}
