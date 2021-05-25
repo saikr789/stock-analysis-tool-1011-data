@@ -92,7 +92,7 @@ if not os.path.exists(simrespath):
     os.makedirs(simrespath)
 
 investment = 100000
-for days in [30, 60, 90, 180, 360, 720, 900, 1080]:
+for days in [30, 60, 90, 180, 360, 720, 1080]:
     try:
         print(days)
         simulate(investment, days)
