@@ -12,13 +12,13 @@ def simulation(df, investment, days, i):
     start = df.iloc[0]['date'] - datetime.timedelta(days=i)
     end = start - datetime.timedelta(days=days)
     refdf = df[df['date'].between(end, start)]
+    refdf = refdf.sort_values(by=["date"],ascending=[True])
     simulation_result = []
     for _, row in refdf.iterrows():
         if row["invest"]:
-            if invest is False:
+            if not invest:
                 if investment < row['close']:
                     break
-
                 shares = int(investment / row['close'])
                 invested = shares * row['close']
                 investment = investment - invested
@@ -27,7 +27,7 @@ def simulation(df, investment, days, i):
                        "entry": True, "exit": False, "date": row["date"].strftime("%d-%m-%Y"), "close": row["close"], "predictedub": row["predicted ub"]}
                 simulation_result.append(res)
         if row['exit']:
-            if invest is True:
+            if invest:
                 investment = investment + shares * row['close']
                 res = {"investment": investment, "shares": shares,
                        "entry": False, "exit": True, "date": row["date"].strftime("%d-%m-%Y"), "close": row["close"], "predictedub": row["predicted ub"]}
@@ -35,12 +35,14 @@ def simulation(df, investment, days, i):
                 invest = False
 
     else:
-        if invest is True:
+        if invest and not row['invest']:
             investment = investment + shares * row['close']
             invest = False
             res = {"investment": investment, "shares": shares,
                    "entry": False, "exit": True, "date": row["date"].strftime("%d-%m-%Y"), "close": row["close"], "predictedub": row["predicted ub"]}
             simulation_result.append(res)
+    if len(simulation_result) < 2:
+        return None
     returns = []
     for i in range(0, len(simulation_result), 2):
         a = simulation_result[i]['investment']
@@ -52,7 +54,6 @@ def simulation(df, investment, days, i):
         return {"average_return_percent": average_return_percent, "simulation_result": simulation_result}
     except:
         pass
-
 
 @ray.remote
 def simulate(code, days, company):
