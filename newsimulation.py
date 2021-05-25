@@ -74,7 +74,10 @@ def simulate(code, days, company):
             res = simulation(df, investment, days, i)
             if res != None:
                 result.append(res)
-            
+
+        if result == []:
+           return None
+
         rows = []
         for res in result:
             curdf = pd.DataFrame(res["simulation_result"])
