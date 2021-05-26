@@ -260,7 +260,6 @@ jobs:
         continue-on-error: true
         run: |
           python create_simulation_files.py
-          git add *
           python simulation.py
       - name: Setup Github Config
         run: |
