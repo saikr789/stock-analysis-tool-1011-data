@@ -8,7 +8,6 @@ import calendar
 import datetime
 import traceback
 
-
 def download_index():
     """
     Downloads the index data file.
@@ -119,7 +118,6 @@ def download_index():
             '/html/body/div[4]/div/div/select[2]')
         year = Select(year)
         while year.options[0].text > y:
-            print(year.options[0].text, y)
             year.select_by_visible_text(year.options[0].text)
             year = driver.find_element_by_xpath(
                 '/html/body/div[4]/div/div/select[2]')
@@ -206,7 +204,7 @@ def download_index():
         res = res.sort_values(by=["Date"], ascending=[False])
         res.to_csv(os.path.join(path, "sp500.csv"), index=None)
     except:
-        traceback.print_exc()
+        pass
 
 
 download_index()

@@ -7,7 +7,6 @@ import pandas as pd
 import time
 import datetime
 from bs4 import BeautifulSoup
-
 import sys
 
 
@@ -86,7 +85,7 @@ def download_risk_free_rate():
         driver.get(risk_free_rate_url)
         download()
     except:
-        traceback.print_exc()
+        pass
 
 
 download_risk_free_rate()
