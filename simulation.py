@@ -3,6 +3,7 @@ import pandas as pd
 import datetime
 import re
 import traceback
+import time
 pd.options.mode.chained_assignment = None
 
 def simulation(df, investment, days):
@@ -99,4 +100,4 @@ for days in [30, 60, 90, 180, 360, 720, 1080]:
     except:
         traceback.print_exc()
 
-time.sleep(100)
+time.sleep(60)
