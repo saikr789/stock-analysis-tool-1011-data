@@ -80,7 +80,7 @@ def simulate(code, days, company):
                 result.append(res)
 
         if result == []:
-           return None
+            return None
 
         rows = []
         for res in result:
