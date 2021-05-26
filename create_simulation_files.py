@@ -70,4 +70,4 @@ for days in [30, 60, 90, 180, 360, 720, 1080]:
         create_files(filename, days)
     except:
         traceback.print_exc()
-time.sleep(100)
+    time.sleep(15)
