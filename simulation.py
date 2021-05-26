@@ -44,10 +44,13 @@ def simulation(df, investment, days):
             simulation_result.append(res)
     returns = []
     for i in range(0, len(simulation_result), 2):
-        a = simulation_result[i]['investment']
-        b = simulation_result[i+1]['investment']
-        r = ((b-a)/a)
-        returns.append(r)
+        try:
+            a = simulation_result[i]['investment']
+            b = simulation_result[i+1]['investment']
+            r = ((b-a)/a)
+            returns.append(r)
+        except:
+            pass
     try:
         average_return_percent = sum(returns)/len(returns)
         return {"average_return_percent": average_return_percent, "simulation_result": simulation_result}
@@ -59,10 +62,11 @@ def simulate(investment, days):
     for security_code in sp500.index.tolist():
         try:
             security_code = str(security_code)
-            spath = security_code + "_" + str(days) + ".csv"
-            df = pd.read_csv(os.path.join(simpath, spath))
             company = re.sub('[!@#$%^&*(.)-=,\\\/\']', '',
                              sp500.loc[int(security_code), "Security Name"]).upper()
+            print(security_code,company)
+            spath = security_code + "_" + str(days) + ".csv"
+            df = pd.read_csv(os.path.join(simpath, spath))
             result = simulation(df, investment, days)
             if result == None:
                 continue
@@ -71,8 +75,7 @@ def simulate(investment, days):
             topreturns.append(result)
             simdf = pd.DataFrame(result["simulation_result"])
             simdf.to_csv(os.path.join(simrespath, spath), index=None)
-            print(security_code+"-"+company)
-        except:
+        except :
             pass
     if topreturns == []:
         return
