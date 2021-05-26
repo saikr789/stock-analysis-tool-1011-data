@@ -138,7 +138,7 @@ for days in [30, 60, 90, 180, 360, 720, 1080]:
         simres = [res for res in simres if res is not None]
         if simres != []:
             columns = ["code", "company", "actual",
-                       "predicted", "minimun", "maximum"]
+                       "predicted", "minimum", "maximum"]
             simdf = pd.DataFrame(simres, columns=columns)
             simdf = simdf.sort_values(by=["actual"], ascending=[False])
             simdf.to_csv(os.path.join(simrespath, "simres" +
