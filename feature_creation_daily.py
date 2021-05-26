@@ -1121,6 +1121,7 @@ def create_new_LB_UB(stock, full_stock):
 def perform_operation(security_code):
     try:
         security_code = str(security_code)
+        print(security_code)
         index_df = pd.read_csv(os.path.join(path, "Index.csv"))
         corporate_df = pd.read_csv(os.path.join(
             path, "CorporateActions/"+security_code+".csv"))
@@ -1183,7 +1184,6 @@ codes.sort()
 
 for a in codes:
     try:
-        print(a)
         perform_operation(a)
     except:
         pass

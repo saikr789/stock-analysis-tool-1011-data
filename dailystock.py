@@ -235,6 +235,7 @@ def update_files():
     result = result.set_index("Code")
     for index, row in result.iterrows():
         try:
+            print(index)
             if os.path.exists(os.path.join(path, str(index)+".csv")):
                 stk = pd.read_csv(os.path.join(path, str(index)+".csv"))
                 stk.loc[len(stk.index)] = row
