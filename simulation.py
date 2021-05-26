@@ -36,7 +36,7 @@ def simulation(df, investment, days):
                 invest = False
 
     else:
-        if invest:
+        if invest and not row['invest']:
             investment = investment + shares * row['close']
             invest = False
             res = {"investment": investment, "shares": shares,
