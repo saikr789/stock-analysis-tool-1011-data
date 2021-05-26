@@ -13,6 +13,7 @@ import warnings
 warnings.filterwarnings("ignore")
 pd.options.mode.chained_assignment = None
 
+
 def pre_process_data(df, null_threshold):
     """
     Drops Date and Unix Date columns from the data.
@@ -110,9 +111,9 @@ def run_linear(X_train, X_test, Y_train, Y_test, num, col, security_code):
 def run_models(df, col, security_code):
     ref = df.copy()
     days = int(re.findall(r"\d+", col)[0])
-    start = df['Date'].iloc[0] + datetime.timedelta(days=days)
-    end = df['Date'].iloc[-1] - datetime.timedelta(days=days)
-    df = df[df.Date.between(start, end)]
+    # start = df['Date'].iloc[0] + datetime.timedelta(days=days)
+    # end = df['Date'].iloc[-1] - datetime.timedelta(days=days)
+    # df = df[df.Date.between(start, end)]
     df = pre_process_data(df, 60)
     df[df.columns] = (df[df.columns].astype(str)).apply(
         pd.to_numeric, errors='coerce')
@@ -176,7 +177,8 @@ def intial_run():
         except:
             traceback.print_exc()
     resultdf = pd.DataFrame(fullresult)
-    resultdf.to_csv(os.path.join(os.getcwd(), "Data", "next_1080_days.csv"), index=None)
+    resultdf.to_csv(os.path.join(os.getcwd(), "Data",
+                    "next_1080_days.csv"), index=None)
 
 
 necessary_columns = ["Date", "Close Price", "Previous 360 days UB", "Min Inc % in 180 days", "Next 60 days LB", "Previous 720 days UB", "No. of Trades GR", "CP % LV 180 days", "Max Inc % in 180 days", "Next 1080 days LB", "CP % BA 180 days", "Next Day Low Price GR", "Max Dec % in 90 days", "Expenditure GR", "CP % HV 90 days", "Min Dec % in 365 days", "Max Dec % in 365 days", "CP % HV 7 days", "CP % BA 7 days", "Avg Inc % in 365 days", "Min Inc % in 90 days", "Avg Inc % in 180 days", "Total Turnover (Rs.) GR", "Low Price GR", "Previous 1080 days UB", "CP % HV 180 days", "Next 180 days UB", "No.of Shares GR", "Previous 60 days UB", "CP % BA 90 days", "Avg Inc % in 90 days", "Sequential Increase %", "WAP GR", "CP % BA 30 days", "Avg Dec % in 180 days", "Previous 720 days LB", "EPS GR", "Deliverable Quantity GR", "Next 360 days UB", "CP % HV 365 days", "Spread Close-Open GR", "Min Dec % in 180 days", "Next 30 days LB", "Sequential Increase", "Previous 360 days LB",
