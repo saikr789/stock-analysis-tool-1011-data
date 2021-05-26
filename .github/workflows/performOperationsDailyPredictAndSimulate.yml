@@ -272,9 +272,8 @@ jobs:
           git commit -m "`date +'%d-%m-%Y'`"
           git push origin master
           
-          
-  newsimulation:
-    name: newsimulation
+  newsimulation30:
+    name: newsimulation30
     continue-on-error: true
     needs: [createsimulationfiles]
     runs-on: ubuntu-latest
@@ -292,10 +291,10 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
-      - name: Create New Simulation
+      - name: Create New Simulation 30
         continue-on-error: true
         run: |
-          python newsimulation.py
+          python newsimulation30.py
       - name: Setup Github Config
         run: |
           git config --global user.name "saikr789"
@@ -306,3 +305,173 @@ jobs:
           git add *
           git commit -m "`date +'%d-%m-%Y'`"
           git push origin master
+          
+    newsimulation60:
+        name: newsimulation60
+        continue-on-error: true
+        needs: [createsimulationfiles]
+        runs-on: ubuntu-latest
+        steps:
+          - name: Removing Unnecessary Files
+            run: |
+              sudo rm -rf /usr/local/lib/android
+              sudo rm -rf /usr/share/dotnet
+          - uses: actions/checkout@v2
+          - name: Set up Python 3.8
+            uses: actions/setup-python@v2
+            with:
+              python-version: 3.8
+          - name: Install dependencies
+            run: |
+              python -m pip install --upgrade pip
+              pip install -r requirements.txt
+          - name: Create New Simulation 60
+            continue-on-error: true
+            run: |
+              python newsimulation60.py
+          - name: Setup Github Config
+            run: |
+              git config --global user.name "saikr789"
+              git config --global user.email "saikrishna.nama@msitprogram.net"
+          - name: Commiting New Files
+            run: |
+              git pull origin master
+              git add *
+              git commit -m "`date +'%d-%m-%Y'`"
+              git push origin master
+          
+    newsimulation90:
+        name: newsimulation90
+        continue-on-error: true
+        needs: [createsimulationfiles]
+        runs-on: ubuntu-latest
+        steps:
+          - name: Removing Unnecessary Files
+            run: |
+              sudo rm -rf /usr/local/lib/android
+              sudo rm -rf /usr/share/dotnet
+          - uses: actions/checkout@v2
+          - name: Set up Python 3.8
+            uses: actions/setup-python@v2
+            with:
+              python-version: 3.8
+          - name: Install dependencies
+            run: |
+              python -m pip install --upgrade pip
+              pip install -r requirements.txt
+          - name: Create New Simulation 90
+            continue-on-error: true
+            run: |
+              python newsimulation90.py
+          - name: Setup Github Config
+            run: |
+              git config --global user.name "saikr789"
+              git config --global user.email "saikrishna.nama@msitprogram.net"
+          - name: Commiting New Files
+            run: |
+              git pull origin master
+              git add *
+              git commit -m "`date +'%d-%m-%Y'`"
+              git push origin master
+
+    newsimulation180:
+        name: newsimulation180
+        continue-on-error: true
+        needs: [createsimulationfiles]
+        runs-on: ubuntu-latest
+        steps:
+          - name: Removing Unnecessary Files
+            run: |
+              sudo rm -rf /usr/local/lib/android
+              sudo rm -rf /usr/share/dotnet
+          - uses: actions/checkout@v2
+          - name: Set up Python 3.8
+            uses: actions/setup-python@v2
+            with:
+              python-version: 3.8
+          - name: Install dependencies
+            run: |
+              python -m pip install --upgrade pip
+              pip install -r requirements.txt
+          - name: Create New Simulation 180
+            continue-on-error: true
+            run: |
+              python newsimulation180.py
+          - name: Setup Github Config
+            run: |
+              git config --global user.name "saikr789"
+              git config --global user.email "saikrishna.nama@msitprogram.net"
+          - name: Commiting New Files
+            run: |
+              git pull origin master
+              git add *
+              git commit -m "`date +'%d-%m-%Y'`"
+              git push origin master
+          
+    newsimulation360:
+        name: newsimulation360
+        continue-on-error: true
+        needs: [createsimulationfiles]
+        runs-on: ubuntu-latest
+        steps:
+          - name: Removing Unnecessary Files
+            run: |
+              sudo rm -rf /usr/local/lib/android
+              sudo rm -rf /usr/share/dotnet
+          - uses: actions/checkout@v2
+          - name: Set up Python 3.8
+            uses: actions/setup-python@v2
+            with:
+              python-version: 3.8
+          - name: Install dependencies
+            run: |
+              python -m pip install --upgrade pip
+              pip install -r requirements.txt
+          - name: Create New Simulation 360
+            continue-on-error: true
+            run: |
+              python newsimulation360.py
+          - name: Setup Github Config
+            run: |
+              git config --global user.name "saikr789"
+              git config --global user.email "saikrishna.nama@msitprogram.net"
+          - name: Commiting New Files
+            run: |
+              git pull origin master
+              git add *
+              git commit -m "`date +'%d-%m-%Y'`"
+              git push origin master
+              
+    newsimulation720:
+        name: newsimulation720
+        continue-on-error: true
+        needs: [createsimulationfiles]
+        runs-on: ubuntu-latest
+        steps:
+          - name: Removing Unnecessary Files
+            run: |
+              sudo rm -rf /usr/local/lib/android
+              sudo rm -rf /usr/share/dotnet
+          - uses: actions/checkout@v2
+          - name: Set up Python 3.8
+            uses: actions/setup-python@v2
+            with:
+              python-version: 3.8
+          - name: Install dependencies
+            run: |
+              python -m pip install --upgrade pip
+              pip install -r requirements.txt
+          - name: Create New Simulation 720
+            continue-on-error: true
+            run: |
+              python newsimulation720.py
+          - name: Setup Github Config
+            run: |
+              git config --global user.name "saikr789"
+              git config --global user.email "saikrishna.nama@msitprogram.net"
+          - name: Commiting New Files
+            run: |
+              git pull origin master
+              git add *
+              git commit -m "`date +'%d-%m-%Y'`"
+              git push origin master
