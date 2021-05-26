@@ -80,7 +80,7 @@ def simulate(investment, days):
     topreturnscompanies = pd.DataFrame(topreturns)
     topreturnscompanies = topreturnscompanies[cols]
     topreturnscompanies = topreturnscompanies.sort_values(by=["average_return_percent"], ascending=[False])
-    topreturnscompanies.to_csv(os.path.join(simrespath, "top_" + str(days)+".csv"), index=None)
+    topreturnscompanies.to_csv(os.path.join(toppath, "sim_" + str(days)+".csv"), index=None)
 
 
 sp500 = pd.read_csv(os.path.join(os.getcwd(), "Data",
@@ -88,6 +88,7 @@ sp500 = pd.read_csv(os.path.join(os.getcwd(), "Data",
 
 simpath = os.path.join(os.getcwd(), "Data", "Simulation")
 simrespath = os.path.join(os.getcwd(), "Data", "SimulationResult")
+toppath = os.path.join(os.getcwd(), "Data", "Top")
 
 if not os.path.exists(simrespath):
     os.makedirs(simrespath)
@@ -99,5 +100,4 @@ for days in [30, 60, 90, 180, 360, 720, 1080]:
         simulate(investment, days)
     except:
         traceback.print_exc()
-
-time.sleep(60)
+    time.sleep(15)

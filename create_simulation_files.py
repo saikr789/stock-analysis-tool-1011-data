@@ -61,7 +61,6 @@ def create_files(filename, days):
         refdf.to_csv(os.path.join(simpath, str(
             n[:6])+"_"+str(days)+".csv"), index=None)
 
-
 result = []
 for days in [30, 60, 90, 180, 360, 720, 1080]:
     try:

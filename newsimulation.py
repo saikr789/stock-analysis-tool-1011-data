@@ -121,6 +121,7 @@ simpath = os.path.join(os.getcwd(), "Data", "Simulation")
 simrespath = os.path.join(os.getcwd(), "Data", "SimulationResult")
 sp500 = pd.read_csv(os.path.join(os.getcwd(), "Data",
                     "SP500companies.csv")).set_index("Security Code")
+toppath = os.path.join(os.getcwd(), "Data", "Top")
 
 ray.init(ignore_reinit_error=True)
 for days in [30, 60, 90, 180, 360, 720, 1080]:
@@ -141,7 +142,7 @@ for days in [30, 60, 90, 180, 360, 720, 1080]:
                        "predicted", "minimum", "maximum"]
             simdf = pd.DataFrame(simres, columns=columns)
             simdf = simdf.sort_values(by=["actual"], ascending=[False])
-            simdf.to_csv(os.path.join(simrespath, "simres" +
+            simdf.to_csv(os.path.join(toppath, "simres" +
                          "_"+str(days)+".csv"), index=None)
     except:
         traceback.print_exc()
