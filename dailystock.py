@@ -245,7 +245,6 @@ def update_files():
         except:
             pass
 
-
 download_deliverables()
 download_bhavcopy()
 path = os.path.join(os.getcwd(), "Data", "Stock")

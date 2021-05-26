@@ -440,7 +440,6 @@ def add_risk_free_column(stock, riskrates, full_stock):
         try:
             stock.loc[date, 'Rate'] = resdf.loc[date, 'Rate']
         except:
-            traceback.print_exc()
             stock.loc[date, 'Rate'] = np.nan
 
     stock = stock.reset_index()
@@ -1165,14 +1164,15 @@ def perform_operation(security_code):
             try:
                 stock_df = quarter_wise_growthrate(stock_df, col)
             except Exception as e:
-                traceback.print_exc()
+                pass
+                
         stock_df = close_price_as_percent_of_LV_HV_BA(stock_df, full_stock)
         result = stock_df.append(gr_stock_df)
         result = drop_duplicate_rows(result)
         result.to_csv(os.path.join(path, "GRStock/"+"gr" +
                       str(security_code)+".csv"), index=None)
     except:
-        traceback.print_exc()
+        pass
 
         
 path = os.path.join(os.getcwd(), "Data")
@@ -1186,4 +1186,4 @@ for a in codes:
         print(a)
         perform_operation(a)
     except:
-        traceback.print_exc()
+        pass
