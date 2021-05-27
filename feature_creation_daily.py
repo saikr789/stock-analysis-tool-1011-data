@@ -1161,6 +1161,7 @@ def perform_operation(security_code):
         stock_df = sequential_increase_percentage(stock_df, full_stock)
         stock_df = sequential_decrease_percentage(stock_df, full_stock)
         stock_df = sequential_increase_decrease(stock_df, full_stock)
+        cols = ["Revenue", "Dividend Value", "Income","Expenditure", "Net Profit", "EPS"]
         for col in cols:
             try:
                 stock_df = quarter_wise_growthrate(stock_df, col)
