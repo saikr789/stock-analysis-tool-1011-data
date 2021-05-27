@@ -257,6 +257,7 @@ jobs:
           pip install -r requirements.txt
       - name: Create Simulation Files
         run: |
+          git rm -rf Data/Simulation
           python create_simulation_files.py
           python simulation.py
       - name: Setup Github Config
