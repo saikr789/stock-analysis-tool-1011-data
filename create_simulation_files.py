@@ -1,3 +1,4 @@
+
 import os
 import pandas as pd
 import re
@@ -5,15 +6,11 @@ import traceback
 import time
 pd.options.mode.chained_assignment = None
 
-def create_files(filename, days):
-    df = pd.read_csv(os.path.join(os.getcwd(), "Data", filename))
-    df = df.dropna(how="all")
-    simpath = os.path.join(os.getcwd(), "Data", "Simulation")
-    if not os.path.exists(simpath):
-        os.makedirs(simpath)
+def create_files(days):
+    filename = "next_{}_days.csv".format(days)
+    df = pd.read_csv(os.path.join(path, filename))
 
-    sp500 = pd.read_csv(os.path.join(
-        os.getcwd(), "Data", "SP500companies.csv")).set_index("Security Code")
+    sp500 = pd.read_csv(os.path.join(path,"SP500companies.csv")).set_index("Security Code")
     cols = ['predicted_column', 'actual',
             'predicted', 'close', 'date', 'company']
     df = df[cols]
@@ -62,11 +59,15 @@ def create_files(filename, days):
             n[:6])+"_"+str(days)+".csv"), index=None)
 
 result = []
+path = os.path.join(os.getcwd(), "Data")
+simpath = os.path.join(os.getcwd(), "Data", "Simulation")
+if not os.path.exists(simpath):
+    os.makedirs(simpath)
+        
 for days in [30, 60, 90, 180, 360, 720, 1080]:
     try:
         print(days)
-        filename = "next" + "_" + str(days) + "_" + "days" + ".csv"
-        create_files(filename, days)
+        create_files(days)
     except:
         traceback.print_exc()
     time.sleep(15)
