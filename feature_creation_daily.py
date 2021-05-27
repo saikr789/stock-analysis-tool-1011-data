@@ -1014,7 +1014,7 @@ def quarter_wise_growthrate(stock, columnName):
     """
     dic = generate_dictionary_for_quarterwise_data(stock, columnName)
     gr_dic = generate_dictionary_for_quarterwise_growthrate_data(dic)
-    stock[columnName + ' GR'] = ''
+    stock[columnName + ' GR'] = 0
     if gr_dic == {}:
         return stock
     else:
