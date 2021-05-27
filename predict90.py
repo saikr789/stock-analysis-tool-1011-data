@@ -40,6 +40,7 @@ def pre_process_data(df, null_threshold):
         if null_threshold * total / 100 < df[col].isnull().sum():
             df.drop(columns=[col], axis=1, inplace=True)
     df.replace([np.inf, -np.inf], np.nan, inplace=True)
+    df[df.columns] = (df[df.columns].astype(str)).apply(pd.to_numeric, errors='coerce')
     df.dropna(axis=0, inplace=True)
     return df
 
