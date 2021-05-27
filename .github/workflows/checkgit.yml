@@ -36,7 +36,7 @@ jobs:
       - name: Check Git Status
         run: |
           df -h --total | grep total
-          python create_simulation_files.py
+          python sample.py
           
       - name: Commiting New Files
         run: |
