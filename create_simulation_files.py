@@ -19,8 +19,9 @@ def create_files(days):
         lambda row: str(int(row)) + "-" + re.sub('[!@#$%^&*(.)-=,\\\/\']', '', sp500.loc[int(row), "Security Name"]).upper())
     for n, g in df.groupby(by=['company']):
         print(n)
-        lower = g.iloc[0] if "LB" in g["predicted_column"][0] else g.iloc[1]
-        upper = g.iloc[0] if "UB" in g["predicted_column"][0] else g.iloc[1]
+        g = g.reset_index(drop=True)
+        lower = g.iloc[0] if "LB" in g["predicted_column"].iloc[0] else g.iloc[1]
+        upper = g.iloc[0] if "UB" in g["predicted_column"].iloc[0] else g.iloc[1]
 
         date = [d.strip()
                 for d in lower['date'][1:-1].replace("\'", "").split(",")]
