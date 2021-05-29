@@ -19,6 +19,6 @@ for days in [30,60,90,180,360,720]:
         sell = df.sort_values(by=["max"],ascending=[False])
         buy.to_csv(os.path.join(toppath,"buy_"+str(days)+".csv"),index=None)
         sell.to_csv(os.path.join(toppath,"sell_"+str(days)+".csv"),index=None)
-    except:
-        pass
+    except Exception as e:
+        print(e)
     time.sleep(5)
