@@ -176,7 +176,6 @@ jobs:
   newsimulation360:
     name: newsimulation360
     continue-on-error: true
-    needs: [createsimulationfiles]
     runs-on: ubuntu-latest
     steps:
       - name: Removing Unnecessary Files
