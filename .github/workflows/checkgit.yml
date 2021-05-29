@@ -13,10 +13,8 @@ jobs:
     steps:
       - name: Space Check
         run: |
-          df -h
           sudo rm -rf /usr/local/lib/android
           sudo rm -rf /usr/share/dotnet
-          df -h
       - uses: actions/checkout@v2
       - name: Set up Python 3.8
         uses: actions/setup-python@v2
@@ -36,11 +34,11 @@ jobs:
       - name: Check Git Status
         run: |
           df -h --total | grep total
-          python sample.py
+          python create_simulation_files.py
           
       - name: Commiting New Files
         run: |
           git pull origin master
-          git add *
+          git add .
           git commit -m "`date +'%d-%m-%Y'`"
           git push origin master
