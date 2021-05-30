@@ -83,8 +83,11 @@ def simulate(investment, days):
     topreturnscompanies = pd.DataFrame(topreturns)
     topreturnscompanies = topreturnscompanies[cols]
     topreturnscompanies = topreturnscompanies.sort_values(by=["average_return_percent"], ascending=[False])
-    topreturnscompanies.to_csv(os.path.join(toppath, "sim_" + str(days)+".csv"), index=None)
-
+    if os.path.exists(os.path.join(toppath, "sim_" + str(days)+".csv")):
+        os.remove(os.path.join(toppath, "sim_" + str(days)+".csv"))
+        topreturnscompanies.to_csv(os.path.join(toppath, "sim_" + str(days)+".csv"), index=None)
+    else:
+        topreturnscompanies.to_csv(os.path.join(toppath, "sim_" + str(days)+".csv"), index=None)
 
 sp500 = pd.read_csv(os.path.join(os.getcwd(), "Data",
                     "SP500companies.csv")).set_index("Security Code")

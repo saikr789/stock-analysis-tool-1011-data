@@ -1,4 +1,3 @@
-
 import os
 import pandas as pd
 import re
@@ -56,9 +55,12 @@ def create_files(days):
             row["predicted ub %"] - row["predicted lb %"]) > 0.1 else False, axis=1)
         refdf["exit"] = refdf.apply(lambda row: True if row["predicted ub %"] < 0.01 and (
             row["predicted ub %"] + row["predicted lb %"]) > 0.05 else False, axis=1)
-        refdf.to_csv(os.path.join(simpath, str(
-            n[:6])+"_"+str(days)+".csv"), index=None)
-
+        if os.path.exists(os.path.join(simpath, str(n[:6])+"_"+str(days)+".csv")):
+            os.remove(os.path.join(simpath, str(n[:6])+"_"+str(days)+".csv"))
+            refdf.to_csv(os.path.join(simpath, str(n[:6])+"_"+str(days)+".csv"), index=None)
+        else:
+            refdf.to_csv(os.path.join(simpath, str(n[:6])+"_"+str(days)+".csv"), index=None)
+        
 result = []
 path = os.path.join(os.getcwd(), "Data")
 simpath = os.path.join(os.getcwd(), "Data", "Simulation")

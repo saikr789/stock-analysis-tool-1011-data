@@ -10,7 +10,6 @@ for days in [30,60,90,180,360,720]:
         print(days)
         spath = "simres_{}.csv".format(days)
         df = pd.read_csv(os.path.join(toppath,spath))
-        df = df.drop(columns=["predicted"])
         df["minimum"] = df.apply(lambda row : row["actual"] if np.isnan(row["minimum"]) else row["minimum"], axis=1)
         df["maximum"] = df.apply(lambda row : row["actual"] if np.isnan(row["maximum"]) else row["maximum"], axis=1)
         df[["minimum","maximum"]] = df.apply(lambda row : pd.Series([np.nanmin([row["minimum"],row["maximum"]]),np.nanmax([row["minimum"],row["maximum"]])]),axis=1)
