@@ -4,7 +4,7 @@ import traceback
 import datetime
 import re
 import ray
-
+import numpy as np
 def simulation(df, investment, days, i):
     invest = False
     shares = 0
