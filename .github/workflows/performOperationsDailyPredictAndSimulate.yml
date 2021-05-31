@@ -240,7 +240,7 @@ jobs:
   newsimulation30:
     name: newsimulation30
     continue-on-error: true
-    needs: [predict30, predict60, predict90, predict180, predict360, predict720, predict1080]
+    needs: [predict30]
     runs-on: ubuntu-latest
     steps:
       - name: Removing Unnecessary Files
@@ -274,7 +274,7 @@ jobs:
   newsimulation60:
     name: newsimulation60
     continue-on-error: true
-    needs: [createsimulationfiles]
+    needs: [predict60]
     runs-on: ubuntu-latest
     steps:
       - name: Removing Unnecessary Files
@@ -308,7 +308,7 @@ jobs:
   newsimulation90:
     name: newsimulation90
     continue-on-error: true
-    needs: [createsimulationfiles]
+    needs: [predict90]
     runs-on: ubuntu-latest
     steps:
       - name: Removing Unnecessary Files
@@ -342,7 +342,7 @@ jobs:
   newsimulation180:
     name: newsimulation180
     continue-on-error: true
-    needs: [createsimulationfiles]
+    needs: [predict180]
     runs-on: ubuntu-latest
     steps:
       - name: Removing Unnecessary Files
@@ -376,7 +376,7 @@ jobs:
   newsimulation360:
     name: newsimulation360
     continue-on-error: true
-    needs: [createsimulationfiles]
+    needs: [predict360]
     runs-on: ubuntu-latest
     steps:
       - name: Removing Unnecessary Files
@@ -410,7 +410,7 @@ jobs:
   newsimulation720:
     name: newsimulation720
     continue-on-error: true
-    needs: [createsimulationfiles]
+    needs: [predict720]
     runs-on: ubuntu-latest
     steps:
       - name: Removing Unnecessary Files
