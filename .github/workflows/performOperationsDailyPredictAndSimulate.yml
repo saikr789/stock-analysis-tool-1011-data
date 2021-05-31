@@ -6,9 +6,8 @@ on:
   schedule:
     - cron: "30 18 * * *"
 jobs:
-  predict30:
-    name: predict30
-    continue-on-error: true
+  predictandsimulate30:
+    name: predictandsimulate30
     runs-on: ubuntu-latest
     steps:
       - name: Removing Unnecessary Files
@@ -24,241 +23,9 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
-      - name: predict30
+      - name: predictandsimulate30
         run: |
           python predict30.py
-      - name: Setup Github Config
-        run: |
-          git config --global user.name "saikr789"
-          git config --global user.email "saikrishna.nama@msitprogram.net"
-      - name: Commiting New Files
-        continue-on-error: true
-        run: |
-          git pull origin master
-          git add *
-          git commit -m "`date +'%d-%m-%Y'`"
-          git push origin master
-
-  predict60:
-    name: predict60
-    continue-on-error: true
-    runs-on: ubuntu-latest
-    steps:
-      - name: Removing Unnecessary Files
-        run: |
-          sudo rm -rf /usr/local/lib/android
-          sudo rm -rf /usr/share/dotnet
-      - uses: actions/checkout@v2
-      - name: Set up Python 3.8
-        uses: actions/setup-python@v2
-        with:
-          python-version: 3.8
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install -r requirements.txt
-      - name: predict60
-        run: |
-          python predict60.py
-      - name: Setup Github Config
-        run: |
-          git config --global user.name "saikr789"
-          git config --global user.email "saikrishna.nama@msitprogram.net"
-      - name: Commiting New Files
-        continue-on-error: true
-        run: |
-          git pull origin master
-          git add *
-          git commit -m "`date +'%d-%m-%Y'`"
-          git push origin master
-
-  predict90:
-    name: predict90
-    continue-on-error: true
-    runs-on: ubuntu-latest
-    steps:
-      - name: Removing Unnecessary Files
-        run: |
-          sudo rm -rf /usr/local/lib/android
-          sudo rm -rf /usr/share/dotnet
-      - uses: actions/checkout@v2
-      - name: Set up Python 3.8
-        uses: actions/setup-python@v2
-        with:
-          python-version: 3.8
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install -r requirements.txt
-      - name: predict90
-        run: |
-          python predict90.py
-      - name: Setup Github Config
-        run: |
-          git config --global user.name "saikr789"
-          git config --global user.email "saikrishna.nama@msitprogram.net"
-      - name: Commiting New Files
-        continue-on-error: true
-        run: |
-          git pull origin master
-          git add *
-          git commit -m "`date +'%d-%m-%Y'`"
-          git push origin master
-
-  predict180:
-    name: predict180
-    continue-on-error: true
-    runs-on: ubuntu-latest
-    steps:
-      - name: Removing Unnecessary Files
-        run: |
-          sudo rm -rf /usr/local/lib/android
-          sudo rm -rf /usr/share/dotnet
-      - uses: actions/checkout@v2
-      - name: Set up Python 3.8
-        uses: actions/setup-python@v2
-        with:
-          python-version: 3.8
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install -r requirements.txt
-      - name: predict180
-        run: |
-          python predict180.py
-      - name: Setup Github Config
-        run: |
-          git config --global user.name "saikr789"
-          git config --global user.email "saikrishna.nama@msitprogram.net"
-      - name: Commiting New Files
-        continue-on-error: true
-        run: |
-          git pull origin master
-          git add *
-          git commit -m "`date +'%d-%m-%Y'`"
-          git push origin master
-
-  predict360:
-    name: predict360
-    continue-on-error: true
-    runs-on: ubuntu-latest
-    steps:
-      - name: Removing Unnecessary Files
-        run: |
-          sudo rm -rf /usr/local/lib/android
-          sudo rm -rf /usr/share/dotnet
-      - uses: actions/checkout@v2
-      - name: Set up Python 3.8
-        uses: actions/setup-python@v2
-        with:
-          python-version: 3.8
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install -r requirements.txt
-      - name: predict360
-        run: |
-          python predict360.py
-      - name: Setup Github Config
-        run: |
-          git config --global user.name "saikr789"
-          git config --global user.email "saikrishna.nama@msitprogram.net"
-      - name: Commiting New Files
-        continue-on-error: true
-        run: |
-          git pull origin master
-          git add *
-          git commit -m "`date +'%d-%m-%Y'`"
-          git push origin master
-
-  predict720:
-    name: predict720
-    continue-on-error: true
-    runs-on: ubuntu-latest
-    steps:
-      - name: Removing Unnecessary Files
-        run: |
-          sudo rm -rf /usr/local/lib/android
-          sudo rm -rf /usr/share/dotnet
-      - uses: actions/checkout@v2
-      - name: Set up Python 3.8
-        uses: actions/setup-python@v2
-        with:
-          python-version: 3.8
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install -r requirements.txt
-      - name: predict720
-        run: |
-          python predict720.py
-      - name: Setup Github Config
-        run: |
-          git config --global user.name "saikr789"
-          git config --global user.email "saikrishna.nama@msitprogram.net"
-      - name: Commiting New Files
-        continue-on-error: true
-        run: |
-          git pull origin master
-          git add *
-          git commit -m "`date +'%d-%m-%Y'`"
-          git push origin master
-
-  predict1080:
-    name: predict1080
-    continue-on-error: true
-    runs-on: ubuntu-latest
-    steps:
-      - name: Removing Unnecessary Files
-        run: |
-          sudo rm -rf /usr/local/lib/android
-          sudo rm -rf /usr/share/dotnet
-      - uses: actions/checkout@v2
-      - name: Set up Python 3.8
-        uses: actions/setup-python@v2
-        with:
-          python-version: 3.8
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install -r requirements.txt
-      - name: predict1080
-        run: |
-          python predict1080.py
-      - name: Setup Github Config
-        run: |
-          git config --global user.name "saikr789"
-          git config --global user.email "saikrishna.nama@msitprogram.net"
-      - name: Commiting New Files
-        continue-on-error: true
-        run: |
-          git pull origin master
-          git add *
-          git commit -m "`date +'%d-%m-%Y'`"
-          git push origin master
-
-  newsimulation30:
-    name: newsimulation30
-    continue-on-error: true
-    needs: [predict30]
-    runs-on: ubuntu-latest
-    steps:
-      - name: Removing Unnecessary Files
-        run: |
-          sudo rm -rf /usr/local/lib/android
-          sudo rm -rf /usr/share/dotnet
-      - uses: actions/checkout@v2
-      - name: Set up Python 3.8
-        uses: actions/setup-python@v2
-        with:
-          python-version: 3.8
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install -r requirements.txt
-      - name: Create New Simulation 30
-        continue-on-error: true
-        run: |
           python newsimulation30.py
       - name: Setup Github Config
         run: |
@@ -270,11 +37,9 @@ jobs:
           git add *
           git commit -m "`date +'%d-%m-%Y'`"
           git push origin master
-          
-  newsimulation60:
-    name: newsimulation60
-    continue-on-error: true
-    needs: [predict60]
+
+  predictandsimulate60:
+    name: predictandsimulate60
     runs-on: ubuntu-latest
     steps:
       - name: Removing Unnecessary Files
@@ -290,9 +55,9 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
-      - name: Create New Simulation 60
-        continue-on-error: true
+      - name: predictandsimulate60
         run: |
+          python predict60.py
           python newsimulation60.py
       - name: Setup Github Config
         run: |
@@ -304,11 +69,9 @@ jobs:
           git add *
           git commit -m "`date +'%d-%m-%Y'`"
           git push origin master
-          
-  newsimulation90:
-    name: newsimulation90
-    continue-on-error: true
-    needs: [predict90]
+
+  predictandsimulate90:
+    name: predictandsimulate90
     runs-on: ubuntu-latest
     steps:
       - name: Removing Unnecessary Files
@@ -324,9 +87,9 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
-      - name: Create New Simulation 90
-        continue-on-error: true
+      - name: predictandsimulate90
         run: |
+          python predict90.py
           python newsimulation90.py
       - name: Setup Github Config
         run: |
@@ -339,10 +102,8 @@ jobs:
           git commit -m "`date +'%d-%m-%Y'`"
           git push origin master
 
-  newsimulation180:
-    name: newsimulation180
-    continue-on-error: true
-    needs: [predict180]
+  predictandsimulate180:
+    name: predictandsimulate180
     runs-on: ubuntu-latest
     steps:
       - name: Removing Unnecessary Files
@@ -358,9 +119,9 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
-      - name: Create New Simulation 180
-        continue-on-error: true
+      - name: predictandsimulate180
         run: |
+          python predict180.py
           python newsimulation180.py
       - name: Setup Github Config
         run: |
@@ -372,11 +133,9 @@ jobs:
           git add *
           git commit -m "`date +'%d-%m-%Y'`"
           git push origin master
-          
-  newsimulation360:
-    name: newsimulation360
-    continue-on-error: true
-    needs: [predict360]
+
+  predictandsimulate360:
+    name: predictandsimulate360
     runs-on: ubuntu-latest
     steps:
       - name: Removing Unnecessary Files
@@ -392,9 +151,9 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
-      - name: Create New Simulation 360
-        continue-on-error: true
+      - name: predictandsimulate360
         run: |
+          python predict360.py
           python newsimulation360.py
       - name: Setup Github Config
         run: |
@@ -406,11 +165,9 @@ jobs:
           git add *
           git commit -m "`date +'%d-%m-%Y'`"
           git push origin master
-              
-  newsimulation720:
-    name: newsimulation720
-    continue-on-error: true
-    needs: [predict720]
+
+  predictandsimulate720:
+    name: predictandsimulate720
     runs-on: ubuntu-latest
     steps:
       - name: Removing Unnecessary Files
@@ -426,10 +183,42 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
-      - name: Create New Simulation 720
-        continue-on-error: true
+      - name: predictandsimulate720
         run: |
+          python predict720.py
           python newsimulation720.py
+      - name: Setup Github Config
+        run: |
+          git config --global user.name "saikr789"
+          git config --global user.email "saikrishna.nama@msitprogram.net"
+      - name: Commiting New Files
+        run: |
+          git pull origin master
+          git add *
+          git commit -m "`date +'%d-%m-%Y'`"
+          git push origin master
+
+  predictandsimulate1080:
+    name: predictandsimulate1080
+    runs-on: ubuntu-latest
+    steps:
+      - name: Removing Unnecessary Files
+        run: |
+          sudo rm -rf /usr/local/lib/android
+          sudo rm -rf /usr/share/dotnet
+      - uses: actions/checkout@v2
+      - name: Set up Python 3.8
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.8
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+      - name: predictandsimulate1080
+        run: |
+          python predict1080.py
+          python newsimulation1080.py
       - name: Setup Github Config
         run: |
           git config --global user.name "saikr789"
