@@ -1,3 +1,4 @@
+
 import ray
 import pandas as pd
 import numpy as np
@@ -182,14 +183,78 @@ def intial_run():
                     "next_720_days.csv"), index=None)
 
 
+def create_files(days):
+    filename = "next_{}_days.csv".format(days)
+    df = pd.read_csv(os.path.join(npath, filename))
+
+    sp500 = pd.read_csv(os.path.join(npath,"SP500companies.csv")).set_index("Security Code")
+    cols = ['predicted_column', 'actual',
+            'predicted', 'close', 'date', 'company']
+    df = df[cols]
+
+    df['company'] = df['company'].apply(
+        lambda row: str(int(row)) + "-" + re.sub('[!@#$%^&*(.)-=,\\\/\']', '', sp500.loc[int(row), "Security Name"]).upper())
+    for n, g in df.groupby(by=['company']):
+        try:
+            print(n)
+            g = g.reset_index(drop=True)
+            lower = g.iloc[0] if "LB" in g["predicted_column"].iloc[0] else g.iloc[1]
+            upper = g.iloc[0] if "UB" in g["predicted_column"].iloc[0] else g.iloc[1]
+
+            date = [d.strip()
+                    for d in lower['date'][1:-1].replace("\'", "").split(",")]
+            close = [float(c.strip()) for c in lower['close'][1:-1].split(",")]
+            actual_lb = [float(a.strip())
+                         for a in lower['actual'][1:-1].split(",")]
+            predicted_lb = [float(p.strip())
+                            for p in lower['predicted'][1:-1].split(",")]
+            actual_ub = [float(a.strip())
+                         for a in upper['actual'][1:-1].split(",")]
+            predicted_ub = [float(p.strip())
+                            for p in upper['predicted'][1:-1].split(",")]
+
+            cols = ["date", "close", "actual lb",
+                    "predicted lb", "actual ub", "predicted ub"]
+            refdf = pd.DataFrame(zip(date, close, actual_lb,
+                                     predicted_lb, actual_ub, predicted_ub), columns=cols)
+
+            refdf["actual ub close diff"] = abs(
+                refdf["close"] - refdf["close"] * refdf["actual ub"])
+            refdf["predicted ub close diff"] = abs(
+                refdf["close"] - refdf["close"] * refdf["predicted ub"])
+            refdf["actual lb close diff"] = abs(
+                refdf["close"] - refdf["close"] * refdf["actual lb"])
+            refdf["predicted lb close diff"] = abs(
+                refdf["close"] - refdf["close"] * refdf["predicted lb"])
+            refdf["predicted lb ub diff"] = refdf["predicted ub close diff"] - \
+                refdf["predicted lb close diff"]
+            refdf["predicted lb %"] = 1 - refdf["predicted lb"]
+            refdf["predicted ub %"] = refdf["predicted ub"] - 1
+            refdf["invest"] = refdf.apply(lambda row: True if row["predicted lb %"] < 0.01 and (
+                row["predicted ub %"] - row["predicted lb %"]) > 0.1 else False, axis=1)
+            refdf["exit"] = refdf.apply(lambda row: True if row["predicted ub %"] < 0.01 and (
+                row["predicted ub %"] + row["predicted lb %"]) > 0.05 else False, axis=1)
+            if os.path.exists(os.path.join(simpath, str(n[:6])+"_"+str(days)+".csv")):
+                os.remove(os.path.join(simpath, str(n[:6])+"_"+str(days)+".csv"))
+                refdf.to_csv(os.path.join(simpath, str(n[:6])+"_"+str(days)+".csv"), index=None)
+            else:
+                refdf.to_csv(os.path.join(simpath, str(n[:6])+"_"+str(days)+".csv"), index=None)
+        
+        except Exception as e:
+            print(e)
+            
 necessary_columns = ["Date", "Close Price", "Previous 360 days UB", "Min Inc % in 180 days", "Next 60 days LB", "Previous 720 days UB", "No. of Trades GR", "CP % LV 180 days", "Max Inc % in 180 days", "Next 1080 days LB", "CP % BA 180 days", "Next Day Low Price GR", "Max Dec % in 90 days", "Expenditure GR", "CP % HV 90 days", "Min Dec % in 365 days", "Max Dec % in 365 days", "CP % HV 7 days", "CP % BA 7 days", "Avg Inc % in 365 days", "Min Inc % in 90 days", "Avg Inc % in 180 days", "Total Turnover (Rs.) GR", "Low Price GR", "Previous 1080 days UB", "CP % HV 180 days", "Next 180 days UB", "No.of Shares GR", "Previous 60 days UB", "CP % BA 90 days", "Avg Inc % in 90 days", "Sequential Increase %", "WAP GR", "CP % BA 30 days", "Avg Dec % in 180 days", "Previous 720 days LB", "EPS GR", "Deliverable Quantity GR", "Next 360 days UB", "CP % HV 365 days", "Spread Close-Open GR", "Min Dec % in 180 days", "Next 30 days LB", "Sequential Increase", "Previous 360 days LB",
                      "Alpha GR", "CP % LV 365 days", "Dividend Value GR", "Sequential Decrease", "Next 360 days LB", "Avg Dec % in 365 days", "Net Profit GR", "CP % LV 7 days", "CP % HV 30 days", "% Deli. Qty to Traded Qty GR", "Min Inc % in 365 days", "Sequential Decrease %", "Beta GR", "Next 30 days UB", "High Price GR", "Spread High-Low GR", "Income GR", "Max Dec % in 180 days", "Previous 30 days UB", "Next 90 days UB", "Next 90 days LB", "Next 1080 days UB", "Open Price GR", "Next 720 days LB", "Max Inc % in 365 days", "Previous 90 days LB", "Previous 90 days UB", "Next 60 days UB", "Avg Dec % in 90 days", "Previous 30 days LB", "Previous 1080 days LB", "Next Day Open Price GR", "Next Day High Price GR", "CP % BA 365 days", "Max Inc % in 90 days", "Revenue GR", "CP % LV 30 days", "Min Dec % in 90 days", "Next 180 days LB", "Previous 180 days LB", "Close Price GR", "CP % LV 90 days", "Previous 60 days LB", "Previous 180 days UB", "Next 720 days UB", "Next Day Close Price GR"]
 columns_to_predict = ['Next 30 days LB', 'Next 30 days UB', 'Next 60 days LB', 'Next 60 days UB', 'Next 90 days LB', 'Next 90 days UB', 'Next 180 days LB',
                       'Next 180 days UB', 'Next 360 days LB', 'Next 360 days UB', 'Next 720 days LB', 'Next 720 days UB', 'Next 1080 days LB', 'Next 1080 days UB']
 
+days = 720
+npath = os.path.join(os.getcwd(), "Data")
+simpath = os.path.join(os.getcwd(), "Data", "Simulation")
 path = os.path.join(os.getcwd(), "Data", "GRStock")
 sp500 = pd.read_csv(os.path.join(os.getcwd(), "Data", "SP500companies.csv"))
 sp500companies = sp500['Security Code'].values.tolist()
 sp500companies.sort()
 ray.init(ignore_reinit_error=True)
 intial_run()
+create_files(days)
