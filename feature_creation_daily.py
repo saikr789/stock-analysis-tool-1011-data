@@ -651,9 +651,9 @@ def find_gain_loss(stock, full_stock):
         pd.to_numeric, errors="coerce")
 
     stock[growth_direct_rate_columns] = pd.DataFrame(
-        [[np.nan]*len(growth_direct_rate_columns)], index=stock.index)
+        [[0]*len(growth_direct_rate_columns)], index=stock.index)
 
-    result = stock.append(full_stock.head(2))
+    result = stock.append(full_stock.head(3))
     result = result.drop_duplicates(subset=["Date"], keep="first")
     result = result.reset_index(drop=True)
     result[direct_columns] = result[direct_columns].apply(
