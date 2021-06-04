@@ -22,10 +22,7 @@ def download_revenue_profit(code, name):
     create_driver : creates the chrome driver.
     download : extracts the data from the page and saves to a csv file.
     """
-    path = os.path.join(os.getcwd(), os.path.join("Data", "Revenue"))
 
-    if not os.path.exists(path):
-        os.makedirs("Data/Revenue")
 
     def create_driver():
         """
@@ -51,7 +48,14 @@ def download_revenue_profit(code, name):
         columns = ["security code", "security name", 'revenue',
                    'income', 'expenditure', 'profit', 'eps', "year", "quartile"]
         code_df = pd.DataFrame(columns=columns)
-        for q in range(55, 109):
+        ref = pd.read_csv(path,str(code)+".csv")
+        last = df.iloc[-1]
+        year = last['year'] - 2007
+        quater = last['quartile']
+        start = (year * 4) + 52 + quater + 1
+        end = datetime.datetime.now().year - 2007
+        end = (end * 4) + 52 + 4
+        for q in range(start, end):
             try:
                 url = "https://www.bseindia.com/corporates/results.aspx?Code=" + \
                     str(code) + "&Company=" + str(name) + \
@@ -118,13 +122,19 @@ def download_revenue_profit(code, name):
                     traceback.print_exc()
             except:
                 traceback.print_exc()
+        code_df = ref.append(code_df)
+        code_df = code_df.sort_values(by=["year","quartile"],ascending=[True,True])
         code_df.to_csv(os.path.join(path, str(code)+".csv"), index=None)
 
     driver = create_driver()
     download()
 
+path = os.path.join(os.getcwd(),"Data","Revenue")
+if not os.path.exists(path):
+    os.makedirs(path)
 
 df = pd.read_csv(os.path.join(os.getcwd(), "Data", "Equity.csv"))
+
 for index, row in df.iterrows():
     try:
         code = row["Security Code"]
@@ -132,3 +142,4 @@ for index, row in df.iterrows():
         download_revenue_profit(code, name)
     except:
         traceback.print_exc()
+    break
