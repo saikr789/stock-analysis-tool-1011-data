@@ -1,50 +1,35 @@
 # This workflow will install Python dependencies, run tests and lint with a single version of Python
 # For more information see: https://help.github.com/actions/language-and-framework-guides/using-python-with-github-actions
 
-name: Check Git Status
+name: Revenue Profit Scrape Work Flow
 on:
   workflow_dispatch:
- 
+  schedule:
+    - cron: "30 12 3 */3 *"
 jobs:
-  checkgitstatus:
+  build:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Space Check
-        run: |
-          sudo rm -rf /usr/local/lib/android
-          sudo rm -rf /usr/share/dotnet
-          du -h --total | grep total
       - uses: actions/checkout@v2
-      - name: Set up Python 3.8
+      - name: Set up Python 3.9
         uses: actions/setup-python@v2
         with:
-          python-version: 3.8
-
+          python-version: 3.9
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
-
+      - name: Run Revenue Profit Scrape
+        run: |
+          python revenue_profit_scrape.py
       - name: Setup Github Config
         run: |
           git config --global user.name "saikr789"
           git config --global user.email "saikrishna.nama@msitprogram.net"
-     
-      - name: Check Git Status
-        run: |
-          df -h --total | grep total
-          git pull origin master
-          git rm -rf Data/Simulation
-          git rm -rf Data/SimulationResult
-          git add .
-          git commit -m "`date +'%d-%m-%Y'`"
-          python create_simulation_files.py
-          python simulation.py
-          
       - name: Commiting New Files
         run: |
           git pull origin master
-          git add .
+          git add Data/Revenue
           git commit -m "`date +'%d-%m-%Y'`"
           git push origin master
-          
