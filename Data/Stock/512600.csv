@@ -1,4 +1,5 @@
 Date,Open Price,High Price,Low Price,Close Price,WAP,No.of Shares,No. of Trades,Total Turnover (Rs.),Deliverable Quantity,% Deli. Qty to Traded Qty,Spread High-Low,Spread Close-Open,Unix Date
+2021-07-23,9.55,9.55,9.55,9.55,9.55,2900.0,5.0,27695.0,2900.0,100.0,0.0,0.0,1626998400.0
 2021-07-20,9.55,9.55,9.55,9.55,9.0,1.0,1.0,9.0,1.0,100.0,0.0,0.0,1626739200.0
 2021-07-19,9.55,9.55,9.55,9.55,9.0,1.0,1.0,9.0,1.0,100.0,0.0,0.0,1626652800.0
 2021-07-07,9.6,9.6,9.6,9.6,9.5,2.0,1.0,19.0,2.0,100.0,0.0,0.0,1625616000.0
