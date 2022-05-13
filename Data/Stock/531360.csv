@@ -1,4 +1,5 @@
 Date,Open Price,High Price,Low Price,Close Price,WAP,No.of Shares,No. of Trades,Total Turnover (Rs.),Deliverable Quantity,% Deli. Qty to Traded Qty,Spread High-Low,Spread Close-Open,Unix Date
+2022-05-13,9.32,9.32,9.32,9.32,9.0,1.0,1.0,9.0,9391.0,45.75,0.0,0.0,1652400000.0
 2022-05-12,8.88,8.88,8.88,8.88,8.5,2.0,2.0,17.0,2.0,100.0,0.0,0.0,1652313600.0
 2022-05-11,8.88,8.88,8.88,8.88,8.8,5.0,1.0,44.0,5.0,100.0,0.0,0.0,1652227200.0
 2022-05-10,8.88,8.88,8.88,8.88,8.75,4.0,4.0,35.0,4.0,100.0,0.0,0.0,1652140800.0
